@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { loginService, signUpService } from "../survice";
+import { loginService, signUpService } from "../survice/auth";
 
 export const loginController = async (
   req: Request,

@@ -142,3 +142,52 @@ export const createEvent = async (
     };
   }
 };
+
+export const getUserEvent = async (eventId: string): Promise<GetEvent> => {
+  try {
+    const event = await prisma.event.findUnique({
+      where: {
+        id: eventId,
+      },
+      select: {
+        name: true,
+        description: true,
+        organization: true,
+        dateTime: true,
+        location: true,
+        orgImgURL: true,
+        createdById: true,
+        createdAt: true,
+        customFields: true,
+      },
+    });
+    if (!event) {
+      return {
+        status: 404,
+        data: {
+          message: "Event not found",
+          event: null,
+        },
+      };
+    }
+    return {
+      status: 200,
+      data: {
+        message: null,
+        event: {
+          ...event,
+          dateTime: event.dateTime.toISOString(),
+          createdAt: event.createdAt.toISOString(),
+        },
+      },
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      data: {
+        message: "Internal server error",
+        event: null,
+      },
+    };
+  }
+};

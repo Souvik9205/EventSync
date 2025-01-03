@@ -1,10 +1,31 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { Calendar, MapPin, Users, ArrowLeft, Edit, QrCode } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Calendar,
+  MapPin,
+  Users,
+  ArrowLeft,
+  Edit,
+  QrCode,
+  Share2,
+  X,
+  Download,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { BACKEND_URL } from "@/app/secret";
+import { BACKEND_URL, FRONTEND_URL } from "@/app/secret";
+import { QRCodeCanvas } from "qrcode.react";
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  LinkedinShareButton,
+  WhatsappShareButton,
+  FacebookIcon,
+  TwitterIcon,
+  LinkedinIcon,
+  WhatsappIcon,
+} from "react-share";
 
 interface Event {
   id: string;
@@ -26,6 +47,8 @@ function EventDetailPage() {
   const token = localStorage.getItem("token");
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showQRCode, setShowQRCode] = useState(false);
+  const [showScanAnimation, setShowScanAnimation] = useState(false);
 
   useEffect(() => {
     const getEventDetails = async function (eventId: string) {
@@ -54,12 +77,123 @@ function EventDetailPage() {
     }
   }, [eventId, token]);
 
+  const shareUrl = `${FRONTEND_URL}/attendence/${eventId}`;
+  const title = event?.name || "Check out this event!";
+
+  const downloadQRCode = () => {
+    const canvas = document.getElementById(
+      "qr-code-canvas"
+    ) as HTMLCanvasElement;
+    if (canvas) {
+      const url = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.download = `${event?.name}-qrcode.png`;
+      link.href = url;
+      link.click();
+    }
+  };
+
+  const QRCodeModal = () => (
+    <AnimatePresence>
+      {showQRCode && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50"
+          onClick={() => setShowQRCode(false)}
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ type: "spring", duration: 0.5 }}
+            className="bg-white rounded-2xl p-8 max-w-md w-full mx-4 relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setShowQRCode(false)}
+              className="absolute right-4 top-4 text-gray-500 hover:text-gray-700"
+            >
+              <X className="h-6 w-6" />
+            </button>
+
+            <div className="text-center">
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                Scan to View Event
+              </h3>
+
+              <div className="relative inline-block">
+                <QRCodeCanvas
+                  id="qr-code-canvas"
+                  value={shareUrl}
+                  size={256}
+                  level="H"
+                  imageSettings={{
+                    src: event?.orgImgURL as string,
+                    height: 64,
+                    width: 64,
+                    excavate: true,
+                  }}
+                  className="rounded-lg shadow-lg"
+                />
+
+                <motion.div
+                  initial={{ top: 0 }}
+                  animate={{ top: ["0%", "100%", "0%"] }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                  className="absolute left-0 w-full h-2 bg-gradient-to-b from-indigo-500/50 to-transparent"
+                />
+              </div>
+
+              <div className="mt-6 flex justify-center space-x-4">
+                <Button
+                  onClick={downloadQRCode}
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white"
+                >
+                  <Download className="h-4 w-4 mr-2" />
+                  Download
+                </Button>
+              </div>
+
+              <div className="mt-8">
+                <p className="text-gray-600 mb-4">Share via</p>
+                <div className="flex justify-center space-x-4">
+                  <FacebookShareButton url={shareUrl} title={title}>
+                    <FacebookIcon size={40} round />
+                  </FacebookShareButton>
+                  <TwitterShareButton url={shareUrl} title={title}>
+                    <TwitterIcon size={40} round />
+                  </TwitterShareButton>
+                  <LinkedinShareButton url={shareUrl} title={title}>
+                    <LinkedinIcon size={40} round />
+                  </LinkedinShareButton>
+                  <WhatsappShareButton url={shareUrl} title={title}>
+                    <WhatsappIcon size={40} round />
+                  </WhatsappShareButton>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-white flex items-center justify-center">
-        <div className="animate-pulse text-indigo-600 text-2xl">
+        <motion.div
+          animate={{ scale: [1, 1.1, 1] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+          className="text-indigo-600 text-2xl"
+        >
           Loading event details...
-        </div>
+        </motion.div>
       </div>
     );
   }
@@ -85,7 +219,7 @@ function EventDetailPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-white">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
+      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
           <div className="flex items-center space-x-3">
             <QrCode className="h-10 w-10 text-indigo-600" />
@@ -111,19 +245,28 @@ function EventDetailPage() {
           transition={{ duration: 0.6 }}
           className="bg-white rounded-xl shadow-lg p-8"
         >
-          <div className="flex justify-between items-start">
+          <div className="flex justify-between items-start flex-wrap gap-4">
             <div>
               <h1 className="text-4xl font-bold text-indigo-900 mb-4">
                 {event.name}
               </h1>
               <p className="text-gray-600 mb-6">{event.description}</p>
             </div>
-            <Button
-              variant="outline"
-              className="border-indigo-500 text-indigo-700 hover:bg-indigo-50"
-            >
-              <Edit className="mr-2 h-5 w-5" /> Edit Event
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                className="border-indigo-500 text-indigo-700 hover:bg-indigo-50"
+              >
+                <Edit className="mr-2 h-5 w-5" /> Edit Event
+              </Button>
+              <Button
+                variant="outline"
+                className="border-indigo-500 text-indigo-700 hover:bg-indigo-50"
+                onClick={() => setShowQRCode(true)}
+              >
+                <Share2 className="mr-2 h-5 w-5" /> Share
+              </Button>
+            </div>
           </div>
 
           <div className="flex items-center space-x-4 mb-8">
@@ -184,6 +327,7 @@ function EventDetailPage() {
           <div className="mt-8 text-center">
             <Button
               size="lg"
+              onClick={() => setShowQRCode(true)}
               className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg transition-all duration-300 transform hover:-translate-y-1"
             >
               Generate QR Code
@@ -191,6 +335,8 @@ function EventDetailPage() {
             </Button>
           </div>
         </motion.div>
+
+        <QRCodeModal />
       </main>
 
       {/* Footer */}

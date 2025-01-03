@@ -56,13 +56,19 @@ const SignupPage: React.FC = () => {
 
       const data = await response.json();
 
-      if (response.status === 200) {
+      if (response.status === 200 || 201) {
         localStorage.setItem("token", data.token);
         toast.success("Signup Successful", {
           description: "Redirecting to dashboard...",
         });
 
-        window.location.href = "/home";
+        const redirectUrl = sessionStorage.getItem("redirect");
+        if (redirectUrl) {
+          window.location.href = redirectUrl;
+          sessionStorage.removeItem("redirectUrl");
+        } else {
+          window.location.href = "/home";
+        }
       } else {
         toast.error("Signup Failed", {
           description: data.message || "Unable to create account",

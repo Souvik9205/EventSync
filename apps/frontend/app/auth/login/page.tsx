@@ -40,7 +40,13 @@ const LoginPage: React.FC = () => {
           description: "Redirecting to dashboard...",
         });
 
-        window.location.href = "/home";
+        const redirectUrl = sessionStorage.getItem("redirect");
+        if (redirectUrl) {
+          window.location.href = redirectUrl;
+          sessionStorage.removeItem("redirectUrl");
+        } else {
+          window.location.href = "/home";
+        }
       } else {
         toast.error("Login Failed", {
           description: data.message || "Invalid credentials",

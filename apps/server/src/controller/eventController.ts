@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createEvent, getEvent } from "../survice/event";
+import { createEvent, getEvent, getUserEvent } from "../survice/event";
 
 export const getEventController = async (
   req: Request,
@@ -72,6 +72,24 @@ export const createEventController = async (
     res.status(result.status).json(result.data);
   } catch (error) {
     console.error("Create event error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const getUserEventController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { eventId } = req.params;
+  if (!eventId || eventId === "") {
+    res.status(400).json({ message: "Event ID is required" });
+    return;
+  }
+  try {
+    const result = await getUserEvent(eventId);
+    res.status(result.status).json(result.data);
+  } catch (error) {
+    console.error("Get event error:", error);
     res.status(500).json({ message: "Server error" });
   }
 };

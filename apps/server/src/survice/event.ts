@@ -8,6 +8,20 @@ export const getEvent = async (
 ): Promise<GetEvent> => {
   try {
     const id = decodeToken(token);
+    const user = await prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!user) {
+      return {
+        status: 404,
+        data: {
+          message: "User not found",
+          event: null,
+        },
+      };
+    }
     const event = await prisma.event.findUnique({
       where: {
         id: eventId,
@@ -22,6 +36,7 @@ export const getEvent = async (
         createdById: true,
         createdAt: true,
         customFields: true,
+        attendees: true,
       },
     });
     if (!event) {
@@ -29,6 +44,15 @@ export const getEvent = async (
         status: 404,
         data: {
           message: "Event not found",
+          event: null,
+        },
+      };
+    }
+    if (event.createdById !== id) {
+      return {
+        status: 403,
+        data: {
+          message: "You are not authorized to view this event",
           event: null,
         },
       };
@@ -107,6 +131,7 @@ export const createEvent = async (
         description: data.description,
         organization: data.organization,
         dateTime: dateTime,
+        tickets: data.tickets,
         location: data.location,
         orgImgURL: data.orgImgURL,
         createdById: id,

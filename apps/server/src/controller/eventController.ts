@@ -42,6 +42,7 @@ export const createEventController = async (
     orgImgURL,
     eventTime,
     customFields,
+    tickets,
   } = req.body;
   if (
     !name ||
@@ -66,6 +67,7 @@ export const createEventController = async (
     orgImgURL,
     eventTime,
     customFields,
+    tickets,
   };
   try {
     const result = await createEvent(token, data);

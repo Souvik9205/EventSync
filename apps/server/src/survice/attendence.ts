@@ -30,6 +30,10 @@ export const registerService = async (
       where: {
         id: eventId,
       },
+      select: {
+        attendees: true,
+        tickets: true,
+      },
     });
     if (!event) {
       return {
@@ -39,6 +43,31 @@ export const registerService = async (
         },
       };
     }
+    const alreadyRegistered = await prisma.attendance.findFirst({
+      where: {
+        user: id,
+        eventId,
+      },
+    });
+    if (alreadyRegistered) {
+      return {
+        status: 409,
+        data: {
+          message: "User already registered for this event",
+        },
+      };
+    }
+    if (event.tickets) {
+      if (event.attendees.length >= event.tickets) {
+        return {
+          status: 409,
+          data: {
+            message: "Event registration is full",
+          },
+        };
+      }
+    }
+
     const register = await prisma.attendance.create({
       data: {
         user: id,

@@ -29,6 +29,8 @@ model Event {
   id          String        @id @default(cuid())
   name        String
   description String
+  tickets     Int?
+  price       Int   @default(0)
   organization String
   orgImgURL    String       
   dateTime    DateTime

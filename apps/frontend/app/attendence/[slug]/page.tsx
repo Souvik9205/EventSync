@@ -159,11 +159,11 @@ function EventFormPage() {
         },
         body: JSON.stringify(data),
       });
-
+      const res = await response.json();
       if (response.status === 200) {
         setIsSubmitted(true);
       } else {
-        setStatus({ message: "Failed to sumbit the form" });
+        setStatus({ message: `${res.message}` });
       }
     } catch (e) {
       setStatus({ message: "An error occurred. Please try again later" });

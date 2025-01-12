@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import Navbar from "./_components/Navbar";
 
 const AttendanceLandingPage: React.FC = () => {
   const [activeFeature, setActiveFeature] = useState(0);
@@ -42,47 +43,7 @@ const AttendanceLandingPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-white">
       {/* Gradient Background Header */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-3">
-            <QrCode className="h-10 w-10 text-indigo-600" />
-            <span className="text-2xl font-bold text-indigo-800">
-              AttendSync
-            </span>
-          </div>
-          <nav className="flex items-center space-x-4">
-            <Button
-              variant="ghost"
-              className="text-indigo-700 hover:bg-indigo-50"
-            >
-              Features
-            </Button>
-            <Button
-              variant="ghost"
-              className="text-indigo-700 hover:bg-indigo-50"
-            >
-              Pricing
-            </Button>
-            <Button
-              variant="outline"
-              className="border-indigo-500 text-indigo-700 hover:bg-indigo-50"
-              onClick={() => {
-                router.push("/auth/login");
-              }}
-            >
-              Login
-            </Button>
-            <Button
-              onClick={() => {
-                router.push("/home");
-              }}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white"
-            >
-              Get Started
-            </Button>
-          </nav>
-        </div>
-      </header>
+      <Navbar />
 
       {/* Hero Section with Animated Elements */}
       <main className="container mx-auto px-4 py-16 grid md:grid-cols-2 gap-12 items-center">

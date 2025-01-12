@@ -37,8 +37,10 @@ model Event {
   location    String
   createdBy   User      @relation("UserEvents", fields: [createdById], references: [id])
   createdById String
+  additionalData String?
   customFields CustomField[]
   attendees   Attendance[]
+  review      Review[]
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 }
@@ -59,4 +61,13 @@ model Attendance {
   fields    Json    
 
   Event     Event    @relation(fields: [eventId], references: [id])
+}
+
+model Review {
+  id   String  @id @default(cuid())
+  eventId String
+  participants Int
+  Review Decimal
+
+  Event Event @relation(fields: [eventId], references: [id])
 }

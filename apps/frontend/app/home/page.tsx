@@ -24,6 +24,7 @@ import {
 import Image from "next/image";
 import EditProfileModal from "../_components/UpdateUserModal";
 import { BACKEND_URL } from "../secret";
+import Navbar from "../_components/Navbar";
 
 interface User {
   id: number;
@@ -151,23 +152,7 @@ const UserProfilePage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-white">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-3">
-            <QrCode className="h-10 w-10 text-indigo-600" />
-            <span className="text-2xl font-bold text-indigo-800">
-              AttendSync
-            </span>
-          </div>
-          <Button
-            variant="ghost"
-            onClick={() => router.push("/home")}
-            className="text-indigo-700 hover:bg-indigo-50"
-          >
-            Home
-          </Button>
-        </div>
-      </header>
+      <Navbar />
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-16">

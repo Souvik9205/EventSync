@@ -34,7 +34,7 @@ export const signupController = async (
 
   try {
     const result = await signUpService(email, password, name);
-    res.status(result.status).json(result.data);
+    res.status(result.status).json(result.message);
   } catch (error) {
     console.error("Signup error:", error);
     res.status(500).json({ message: "Server error" });

@@ -76,3 +76,8 @@ export interface CreateEvent {
   eventTime: string;
   customFields?: CustomField[];
 }
+
+export interface GetReview {
+  review: number;
+  eventId: string;
+}

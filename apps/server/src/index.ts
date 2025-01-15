@@ -5,6 +5,7 @@ import authRouter from "./routes/authRouter";
 import userRouter from "./routes/userRouter";
 import eventRouter from "./routes/eventRouter";
 import registerRouter from "./routes/attendenceRouter";
+import OTPVerifyRouter from "./routes/otpVerifyRouter";
 
 const app = express();
 const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
@@ -24,6 +25,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/event", eventRouter);
 app.use("/api", registerRouter);
+app.use("/api/otp", OTPVerifyRouter);
 const PORT = 8080;
 
 app.get("/", (req, res) => {

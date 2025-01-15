@@ -65,9 +65,25 @@ model Attendance {
 
 model Review {
   id   String  @id @default(cuid())
-  eventId String
+  eventId String @unique
   participants Int
   Review Decimal
 
   Event Event @relation(fields: [eventId], references: [id])
+}
+
+model Otp {
+  id String @id @default(cuid())
+  user String
+  otp String
+  data Json
+  type OTP_Type
+
+  expiresAt DateTime
+}
+
+enum OTP_Type {
+  UserOtp
+  EverntOtp
+  RegisterOtp
 }

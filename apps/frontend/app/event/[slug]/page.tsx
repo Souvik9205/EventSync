@@ -6,7 +6,6 @@ import {
   Calendar,
   MapPin,
   Users,
-  ArrowLeft,
   Edit,
   QrCode,
   Share2,
@@ -16,7 +15,6 @@ import {
   Clock,
   UserCheck,
   Users2,
-  Percent,
   Download,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";

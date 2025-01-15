@@ -1,5 +1,10 @@
 import { Request, Response } from "express";
-import { createEvent, getEvent, getUserEvent } from "../survice/event";
+import {
+  createEvent,
+  getEvent,
+  getUserEvent,
+  reviewEvent,
+} from "../survice/event";
 
 export const getEventController = async (
   req: Request,
@@ -89,6 +94,30 @@ export const getUserEventController = async (
   }
   try {
     const result = await getUserEvent(eventId);
+    res.status(result.status).json(result.data);
+  } catch (error) {
+    console.error("Get event error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const GetReviewController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) {
+    res.status(401).json({ message: "Unauthorized" });
+    return;
+  }
+  const { eventId, review } = req.body;
+  if (!eventId || !review) {
+    res.status(400).json({ message: "Event ID and review are required" });
+    return;
+  }
+  const data = { eventId, review };
+  try {
+    const result = await reviewEvent(token, data);
     res.status(result.status).json(result.data);
   } catch (error) {
     console.error("Get event error:", error);

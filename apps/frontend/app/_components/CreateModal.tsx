@@ -27,6 +27,7 @@ interface EventFormData {
   orgImgURL: string;
   tickets: string;
   customFields?: CustomField[];
+  additionalData: string;
 }
 
 interface EventCreationModalProps {
@@ -50,6 +51,7 @@ export const EventCreationModal: React.FC<EventCreationModalProps> = ({
     eventTime: "",
     tickets: "",
     customFields: [],
+    additionalData: "",
   });
 
   const [error, setError] = useState<string | null>(null);
@@ -132,6 +134,7 @@ export const EventCreationModal: React.FC<EventCreationModalProps> = ({
         eventTime: "",
         tickets: "",
         customFields: [],
+        additionalData: "",
       });
       setCustomFields([]);
       onClose();
@@ -182,6 +185,22 @@ export const EventCreationModal: React.FC<EventCreationModalProps> = ({
               id="description"
               name="description"
               value={formData.description}
+              onChange={handleChange}
+              className="mt-1"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="additionalData"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Additional Details/URL
+            </label>
+            <Textarea
+              id="additionalData"
+              name="additionalData"
+              value={formData.additionalData}
               onChange={handleChange}
               className="mt-1"
             />

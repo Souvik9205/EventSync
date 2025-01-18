@@ -31,6 +31,7 @@ export const getEvent = async (
         name: true,
         description: true,
         organization: true,
+        additionalData: true,
         dateTime: true,
         location: true,
         orgImgURL: true,
@@ -39,6 +40,8 @@ export const getEvent = async (
         customFields: true,
         attendees: true,
         tickets: true,
+        price: true,
+        createdBy: true,
         review: true,
       },
     });
@@ -133,8 +136,9 @@ export const createEvent = async (
         name: data.name,
         description: data.description,
         organization: data.organization,
+        additionalData: data.additionalData,
         dateTime: dateTime,
-        tickets: data.tickets,
+        tickets: parseInt(data.tickets, 10),
         location: data.location,
         orgImgURL: data.orgImgURL,
         createdById: id,
@@ -164,7 +168,7 @@ export const createEvent = async (
     return {
       status: 500,
       data: {
-        message: "Internal server error",
+        message: `Internal server error, ${error}`,
         event: null,
       },
     };

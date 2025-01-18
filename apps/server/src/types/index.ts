@@ -66,7 +66,8 @@ export interface CustomField {
 }
 
 export interface CreateEvent {
-  tickets: any;
+  additionalData: string;
+  tickets: string;
   name: string;
   description: string;
   organization: string;

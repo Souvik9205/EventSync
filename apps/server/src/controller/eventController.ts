@@ -48,6 +48,7 @@ export const createEventController = async (
     eventTime,
     customFields,
     tickets,
+    additionalData,
   } = req.body;
   if (
     !name ||
@@ -73,6 +74,7 @@ export const createEventController = async (
     eventTime,
     customFields,
     tickets,
+    additionalData,
   };
   try {
     const result = await createEvent(token, data);

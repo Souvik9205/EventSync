@@ -16,6 +16,11 @@ import {
   UserCheck,
   Users2,
   Download,
+  Ticket,
+  IndianRupee,
+  Info,
+  Star,
+  StarOff,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BACKEND_URL, FRONTEND_URL } from "@/app/secret";
@@ -61,9 +66,17 @@ interface Attendee {
   fields: AttendeeFields;
 }
 
+interface Review {
+  id: string;
+  eventId: string;
+  participants: number;
+  Review: number;
+}
+
 interface Event {
   id: string;
   name: string;
+  additionalData: string;
   description: string;
   dateTime: string;
   createdAt: string;
@@ -74,6 +87,12 @@ interface Event {
   orgImgURL: string;
   customFields: CustomField[];
   attendees: Attendee[];
+  review: Review[];
+  price: number;
+  createdBy: {
+    name: string;
+  };
+  tickets: number;
 }
 
 function EventDetailPage() {
@@ -348,268 +367,264 @@ function EventDetailPage() {
       </div>
     );
   }
-
+  const fadeIn = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6 },
+  };
   return (
-    <div>
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-white">
-        <Navbar />
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50">
+      <Navbar />
 
-        {/* Event Details */}
-        <div className="container mx-auto px-4 pt-16">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="bg-white rounded-xl shadow-lg p-8"
-          >
-            <div className="flex justify-between items-start flex-wrap gap-4">
-              <div>
-                <h1 className="text-4xl font-bold text-indigo-900 mb-4">
-                  {event.name}
-                </h1>
-                <p className="text-gray-600 mb-6">{event.description}</p>
-              </div>
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  className="border-indigo-500 text-indigo-700 hover:bg-indigo-50"
-                >
-                  <Edit className="mr-2 h-5 w-5" /> Edit Event
-                </Button>
-                <Button
-                  variant="outline"
-                  className="border-indigo-500 text-indigo-700 hover:bg-indigo-50"
-                  onClick={() => setShowQRCode(true)}
-                >
-                  <Share2 className="mr-2 h-5 w-5" /> Share
-                </Button>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-4 mb-8">
-              <img
-                src={event.orgImgURL}
-                alt="organization logo"
-                className="h-16 w-16 rounded-full"
-              />
-              <p className="text-gray-600">
-                created by:{" "}
-                <span className="font-bold text-indigo-900">
-                  {event.organization}
-                </span>
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="bg-indigo-50 p-6 rounded-xl"
-              >
-                <Calendar className="h-8 w-8 text-indigo-600 mb-4" />
-                <h3 className="text-xl font-semibold text-indigo-900 mb-2">
-                  Event Date
-                </h3>
-                <p className="text-gray-700">
-                  {new Date(event.dateTime).toLocaleString()}
-                </p>
-              </motion.div>
-
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="bg-teal-50 p-6 rounded-xl"
-              >
-                <MapPin className="h-8 w-8 text-teal-600 mb-4" />
-                <h3 className="text-xl font-semibold text-teal-900 mb-2">
-                  Location
-                </h3>
-                <p className="text-gray-700">
-                  {event.location || "Not specified"}
-                </p>
-              </motion.div>
-
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="bg-purple-50 p-6 rounded-xl"
-              >
-                <Users className="h-8 w-8 text-purple-600 mb-4" />
-                <h3 className="text-xl font-semibold text-purple-900 mb-2">
-                  Participants
-                </h3>
-                <p className="text-gray-700">
-                  {event.attendees.length || "Not set"}
-                </p>
-              </motion.div>
-            </div>
-
-            <div className="mt-8 text-center">
-              <Button
-                size="lg"
-                onClick={() => setShowQRCode(true)}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg transition-all duration-300 transform hover:-translate-y-1"
-              >
-                Generate QR Code
-                <QrCode className="ml-2 h-5 w-5" />
-              </Button>
-            </div>
-          </motion.div>
-
-          <QRCodeModal />
+      {/* Hero Section with Glassmorphism */}
+      <div className="relative h-[55vh] overflow-hidden">
+        {/* Background gradient with overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-600 via-teal-500 to-blue-600">
+          <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" />
         </div>
 
-        <main className="container mx-auto px-4 py-8 space-y-8">
-          {/* Statistics Cards */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-          >
-            <Card className="bg-white hover:shadow-lg transition-shadow">
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-gray-500">
-                  Total Attendees
-                </CardTitle>
-                <UserCheck className="h-4 w-4 text-indigo-600" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-indigo-900">
-                  {stats?.totalAttendees || 0}
-                </div>
-                <p className="text-xs text-gray-500">people registered</p>
-              </CardContent>
-            </Card>
+        {/* Decorative circles */}
+        <div className="absolute top-20 right-20 w-64 h-64 bg-white/10 rounded-full blur-2xl" />
+        <div className="absolute bottom-20 left-20 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
 
-            <Card className="bg-white hover:shadow-lg transition-shadow">
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-gray-500">
-                  Today's Attendance
-                </CardTitle>
-                <CalendarDays className="h-4 w-4 text-teal-600" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-teal-900">
-                  {stats?.todayAttendees || 0}
-                </div>
-                <p className="text-xs text-gray-500">checked in today</p>
-              </CardContent>
-            </Card>
+        {/* Main Content */}
+        <motion.div
+          className="relative container mx-auto px-6 h-auto py-16 flex items-center"
+          {...fadeIn}
+        >
+          <div className="max-w-4xl">
+            <div className="flex items-center space-x-6 mb-8">
+              <motion.img
+                src={event.orgImgURL}
+                alt={event.organization}
+                className="h-20 w-20 rounded-2xl bg-white p-3 shadow-xl"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.2, type: "spring" }}
+              />
+              <motion.span
+                className="text-2xl text-white font-medium"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                {event.organization}
+              </motion.span>
+            </div>
 
-            <Card className="bg-white hover:shadow-lg transition-shadow">
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-gray-500">
-                  Departments
-                </CardTitle>
-                <Users2 className="h-4 w-4 text-purple-600" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-purple-900">
-                  {stats?.uniqueDepartments || 0}
-                </div>
-                <p className="text-xs text-gray-500">unique departments</p>
-              </CardContent>
-            </Card>
+            <motion.h1
+              className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              {event.name}
+            </motion.h1>
+            <p className="text-white/80">
+              created by{" "}
+              <span className="text-white text-lg">{event.createdBy.name}</span>
+            </p>
 
-            <Card className="bg-white hover:shadow-lg transition-shadow">
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-gray-500">
-                  Average Age
-                </CardTitle>
-                <BarChart className="h-4 w-4 text-orange-600" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-orange-900">
-                  {stats?.averageAge.toFixed(1)}
-                </div>
-                <p className="text-xs text-gray-500">years</p>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          {/* Attendance Records Table */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="bg-white rounded-xl shadow-lg p-6"
-          >
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-indigo-900">
-                Attendance Records
-              </h2>
+            <motion.div
+              className="flex gap-4 mt-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+            >
+              <Button
+                variant="secondary"
+                className="bg-white/80 hover:bg-white text-emerald-700 font-medium px-6 py-3 text-lg shadow-lg"
+              >
+                <Edit className="mr-3 h-5 w-5" /> Edit Event
+              </Button>
               <Button
                 variant="outline"
-                className="border-indigo-500 text-indigo-700 hover:bg-indigo-50"
+                className="border-white text-white bg-transparent hover:bg-white hover:text-emerald-700 font-medium px-6 py-3 text-lg"
+                onClick={() => setShowQRCode(true)}
               >
-                <Download className="mr-2 h-4 w-4" /> Export
+                <Share2 className="mr-3 h-5 w-5" /> Share Event
               </Button>
-            </div>
-
-            <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow className="bg-indigo-50/60">
-                      <TableHead className="py-4 px-6 text-left text-sm font-semibold text-indigo-900">
-                        <div className="flex items-center space-x-2">
-                          <Clock className="h-4 w-4" />
-                          <span>Timestamp</span>
-                        </div>
-                      </TableHead>
-                      {event?.customFields?.map((field) => (
-                        <TableHead
-                          key={field.id}
-                          className="py-4 px-6 text-left text-sm font-semibold text-indigo-900"
-                        >
-                          {field.fieldName}
-                        </TableHead>
-                      ))}
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {event?.attendees?.map((attendee) => (
-                      <TableRow
-                        key={attendee.id}
-                        className="hover:bg-gray-50 transition-colors"
-                      >
-                        <TableCell className="py-4 px-6 text-sm font-medium text-gray-900">
-                          {new Date(attendee.timestamp).toLocaleString()}
-                        </TableCell>
-                        {event?.customFields?.map((field) => (
-                          <TableCell
-                            key={field.id}
-                            className="py-4 px-6 text-sm text-gray-500"
-                          >
-                            {attendee.fields[field.fieldName]}
-                          </TableCell>
-                        ))}
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </div>
-
-            {event?.attendees.length === 0 && (
-              <div className="text-center py-12">
-                <Users2 className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900">
-                  No attendees yet
-                </h3>
-                <p className="text-gray-500">
-                  Share the QR code to start collecting attendance.
-                </p>
-              </div>
-            )}
-          </motion.div>
-        </main>
-
-        {/* Footer */}
-        <footer className="bg-indigo-900 text-white py-12">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p>© 2024 AttendSync. Revolutionizing Attendance Tracking.</p>
+            </motion.div>
           </div>
-        </footer>
+
+          {event?.review && event.review.length > 0 ? (
+            <Card className="backdrop-blur-xl bg-white/95 shadow-xl border-0 overflow-hidden absolute top-20 right-20">
+              <CardContent className="p-6">
+                <motion.div
+                  className="flex items-center gap-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                >
+                  {/* Rating Number */}
+                  <motion.div
+                    className="shrink-0"
+                    initial={{ scale: 0.8 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                      {event.review[0].Review}
+                    </div>
+                  </motion.div>
+
+                  {/* Divider */}
+                  <div className="h-12 w-px bg-gradient-to-b from-emerald-100 to-teal-100" />
+
+                  {/* Stars and Participants */}
+                  <div className="flex flex-col gap-2">
+                    <div className="flex gap-1">
+                      {Array.from({ length: 5 }, (_, index) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                        >
+                          <Star
+                            className={`h-5 w-5 ${
+                              index < Math.round(event.review[0].Review)
+                                ? "text-yellow-400 fill-yellow-400"
+                                : "text-gray-200"
+                            }`}
+                          />
+                        </motion.div>
+                      ))}
+                    </div>
+                    <motion.div
+                      className="text-sm text-gray-500"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.5 }}
+                    >
+                      {event.review[0].participants} rating
+                      {event.review[0].participants > 1 ? "s" : ""}
+                    </motion.div>
+                  </div>
+                </motion.div>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card className="backdrop-blur-xl bg-white/95 shadow-xl border-0 overflow-hidden absolute top-20 right-20">
+              <CardContent className="p-6">
+                <motion.div
+                  className="flex items-center gap-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                >
+                  <StarOff className="h-5 w-5 text-gray-300" />
+                  <span className="text-sm text-gray-500">No ratings yet</span>
+                </motion.div>
+              </CardContent>
+            </Card>
+          )}
+        </motion.div>
       </div>
+
+      {/* Content Section */}
+      <div className="container mx-auto px-6 -mt-32 pb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Main Content */}
+          <motion.div
+            className="lg:col-span-2 space-y-8"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <Card className="backdrop-blur-xl bg-white/95 shadow-xl border-0">
+              <CardContent className="p-8">
+                <h2 className="text-3xl font-semibold text-gray-900 mb-6">
+                  About the Event
+                </h2>
+                <p className="text-gray-600 text-lg leading-relaxed whitespace-pre-wrap">
+                  {event.description}
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Sidebar */}
+          <motion.div
+            className="space-y-6"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <Card className="backdrop-blur-xl bg-white/95 shadow-xl border-0">
+              <CardContent className="p-6">
+                <Button
+                  size="lg"
+                  onClick={() => setShowQRCode(true)}
+                  className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-lg font-medium py-6 shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+                >
+                  Generate QR Code
+                  <QrCode className="ml-3 h-6 w-6" />
+                </Button>
+
+                <div className="mt-8 space-y-6">
+                  {[
+                    {
+                      icon: Calendar,
+                      text: new Date(event.dateTime).toLocaleDateString(
+                        "en-US",
+                        {
+                          weekday: "long",
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        }
+                      ),
+                    },
+                    {
+                      icon: Clock,
+                      text: new Date(event.dateTime).toLocaleTimeString(
+                        "en-US",
+                        { hour: "2-digit", minute: "2-digit" }
+                      ),
+                    },
+                    { icon: MapPin, text: event.location },
+                    {
+                      icon: Ticket,
+                      text: `${event.tickets ? `${event.tickets} total seats available` : "no set seat limit"}`,
+                    },
+                    {
+                      icon: IndianRupee,
+                      text: event.price === 0 ? "Free" : `₹${event.price}`,
+                    },
+                    {
+                      icon: Users,
+                      text: `${event.attendees?.length || 0} registered attendees`,
+                    },
+                  ].map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center space-x-4 text-gray-700 text-lg"
+                    >
+                      <item.icon className="h-6 w-6 text-emerald-600" />
+                      <span>{item.text}</span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="backdrop-blur-xl bg-white/95 shadow-xl border-0">
+              <CardHeader>
+                <CardTitle className="text-xl font-semibold flex items-center text-gray-900">
+                  <Info className="h-6 w-6 mr-3 text-emerald-600" />
+                  Additional Information
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600 text-lg leading-relaxed">
+                  {event.additionalData}
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+      </div>
+
+      <QRCodeModal />
     </div>
   );
 }

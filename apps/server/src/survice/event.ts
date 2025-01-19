@@ -37,7 +37,6 @@ export const getEvent = async (
         orgImgURL: true,
         createdById: true,
         createdAt: true,
-        customFields: true,
         attendees: true,
         tickets: true,
         price: true,
@@ -185,14 +184,17 @@ export const getUserEvent = async (eventId: string): Promise<GetEvent> => {
         name: true,
         description: true,
         organization: true,
+        additionalData: true,
         dateTime: true,
         location: true,
         orgImgURL: true,
         createdById: true,
         createdAt: true,
-        customFields: true,
         tickets: true,
         review: true,
+        price: true,
+        createdBy: true,
+        attendees: true,
       },
     });
     if (!event) {
@@ -210,6 +212,7 @@ export const getUserEvent = async (eventId: string): Promise<GetEvent> => {
         message: null,
         event: {
           ...event,
+          attendees: event.attendees?.length || 0,
           dateTime: event.dateTime.toISOString(),
           createdAt: event.createdAt.toISOString(),
         },
@@ -304,6 +307,52 @@ export const reviewEvent = async (
       status: 500,
       data: {
         message: `Internal server error, ${error}`,
+      },
+    };
+  }
+};
+export const getEventFields = async (eventId: string): Promise<any> => {
+  try {
+    const event = await prisma.event.findUnique({
+      where: {
+        id: eventId,
+      },
+      select: {
+        name: true,
+        description: true,
+        organization: true,
+        additionalData: true,
+        dateTime: true,
+        location: true,
+        orgImgURL: true,
+        customFields: true,
+      },
+    });
+    if (!event) {
+      return {
+        status: 404,
+        data: {
+          message: "Event not found",
+          event: null,
+        },
+      };
+    }
+    return {
+      status: 200,
+      data: {
+        message: null,
+        event: {
+          ...event,
+          dateTime: event.dateTime.toISOString(),
+        },
+      },
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      data: {
+        message: "Internal server error",
+        event: null,
       },
     };
   }

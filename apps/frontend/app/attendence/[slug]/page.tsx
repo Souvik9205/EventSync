@@ -19,30 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Formik, Form, Field, FieldProps } from "formik";
 import * as Yup from "yup";
 import { BACKEND_URL } from "@/app/secret";
-
-interface CustomField {
-  id: string;
-  eventId: string;
-  fieldName: string;
-  fieldType: string;
-}
-
-interface Event {
-  name: string;
-  description: string;
-  organization: string;
-  dateTime: string;
-  location: string;
-  orgImgURL: string;
-  createdById: string;
-  createdAt: string;
-  customFields: CustomField[];
-}
-
-interface ApiResponse {
-  message: string | null;
-  event: Event | null;
-}
+import Loading from "@/app/_components/Loading";
 
 function EventFormPage() {
   const router = useRouter();
@@ -63,7 +40,7 @@ function EventFormPage() {
   useEffect(() => {
     const fetchEventDetails = async () => {
       try {
-        const response = await fetch(`${BACKEND_URL}/event/user/${eventId}`);
+        const response = await fetch(`${BACKEND_URL}/event/fields/${eventId}`);
         const data: ApiResponse = await response.json();
 
         if (!data.event) {
@@ -205,24 +182,7 @@ function EventFormPage() {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-white flex items-center justify-center">
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 180, 360],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="text-indigo-600 text-2xl"
-        >
-          <QrCode className="h-12 w-12" />
-        </motion.div>
-      </div>
-    );
+    <Loading />;
   }
 
   if (error) {

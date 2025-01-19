@@ -4,6 +4,7 @@ import {
   getEvent,
   getUserEvent,
   reviewEvent,
+  getEventFields,
 } from "../survice/event";
 
 export const getEventController = async (
@@ -120,6 +121,24 @@ export const GetReviewController = async (
   const data = { eventId, review };
   try {
     const result = await reviewEvent(token, data);
+    res.status(result.status).json(result.data);
+  } catch (error) {
+    console.error("Get event error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const getEventFieldsController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { eventId } = req.params;
+  if (!eventId || eventId === "") {
+    res.status(400).json({ message: "Event ID is required" });
+    return;
+  }
+  try {
+    const result = await getEventFields(eventId);
     res.status(result.status).json(result.data);
   } catch (error) {
     console.error("Get event error:", error);

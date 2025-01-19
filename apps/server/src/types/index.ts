@@ -53,7 +53,7 @@ export interface GetEvent {
       orgImgURL: string;
       createdById: string;
       createdAt: string;
-      customFields: CustomField[];
+      attendees: any;
     } | null;
   };
 }

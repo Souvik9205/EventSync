@@ -5,14 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import EventCreationModal from "../_components/CreateModal";
 import { toast } from "sonner";
-import {
-  Users,
-  Calendar,
-  PlusCircle,
-  QrCode,
-  UserCircle2,
-  Edit,
-} from "lucide-react";
+import { Users, Calendar, PlusCircle, Edit } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -25,26 +18,6 @@ import Image from "next/image";
 import EditProfileModal from "../_components/UpdateUserModal";
 import { BACKEND_URL } from "../secret";
 import Navbar from "../_components/Navbar";
-
-interface User {
-  id: number;
-  email: string;
-  name: string | null;
-  imgURL: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface Event {
-  id: string;
-  name: string;
-  description: string;
-  dateTime: string;
-  createdAt: string;
-  updatedAt: string;
-  organization: string;
-  createdById: string;
-}
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleString("en-US", {
@@ -97,7 +70,6 @@ const UserProfilePage = () => {
         setLoading(false);
       }
     };
-
     const fetchUserEventData = async () => {
       try {
         const userEventResponse = await fetch(`${BACKEND_URL}/user/events`, {

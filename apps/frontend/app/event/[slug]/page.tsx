@@ -10,12 +10,7 @@ import {
   QrCode,
   Share2,
   X,
-  BarChart,
-  CalendarDays,
   Clock,
-  UserCheck,
-  Users2,
-  Download,
   Ticket,
   IndianRupee,
   Info,
@@ -35,14 +30,6 @@ import {
   LinkedinIcon,
   WhatsappIcon,
 } from "react-share";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Navbar from "@/app/_components/Navbar";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -103,6 +90,11 @@ function EventDetailPage() {
   const [loading, setLoading] = useState(true);
   const [showQRCode, setShowQRCode] = useState(false);
 
+  useEffect(() => {
+    if (!token) {
+      router.push("/auth/login");
+    }
+  }, []);
   useEffect(() => {
     const getEventDetails = async function (eventId: string) {
       if (token) {
@@ -463,7 +455,7 @@ function EventDetailPage() {
                     transition={{ duration: 0.3 }}
                   >
                     <div className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                      {event.review[0].Review}
+                      {Number(event.review[0].Review).toFixed(2)}
                     </div>
                   </motion.div>
 

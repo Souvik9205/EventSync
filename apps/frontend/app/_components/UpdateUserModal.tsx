@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Image from "next/image";
 import {
   Dialog,
   DialogContent,
@@ -92,10 +91,20 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
           />
         </div>
         <div className="mt-6 flex justify-end space-x-3">
-          <Button variant="ghost" onClick={onClose} disabled={loading}>
+          <Button
+            className="hover:text-white hover:bg-emerald-500 bg-emerald-700 text-white font-medium px-4 md:px-6 py-2 md:py-3 text-base md:text-lg"
+            variant="ghost"
+            onClick={onClose}
+            disabled={loading}
+          >
             Cancel
           </Button>
-          <Button onClick={handleSave} disabled={loading}>
+          <Button
+            variant="outline"
+            className="border-emerald-700 text-emerald-700 bg-transparent hover:bg-emerald-700 hover:text-white font-medium px-4 md:px-6 py-2 md:py-3 text-base md:text-lg"
+            onClick={handleSave}
+            disabled={loading}
+          >
             {loading ? "Saving..." : "Save"}
           </Button>
         </div>

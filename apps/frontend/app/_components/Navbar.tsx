@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { QrCode, UserCircle } from "lucide-react";
+import { QrCode, UserCircle, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const NavLink: React.FC<{ href: string; children: React.ReactNode }> = ({
@@ -9,40 +9,50 @@ const NavLink: React.FC<{ href: string; children: React.ReactNode }> = ({
 }) => (
   <motion.a
     href={href}
-    className="relative text-gray-600 hover:text-indigo-600 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 group"
+    className="relative text-gray-600 hover:text-emerald-600 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 group"
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
   >
     {children}
     <motion.span
-      className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-indigo-500 to-indigo-700 transform scale-x-0 origin-left transition-transform duration-200 group-hover:scale-x-100"
+      className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 transform scale-x-0 origin-left transition-transform duration-200 group-hover:scale-x-100"
       initial={false}
     />
+  </motion.a>
+);
+
+const MobileNavLink: React.FC<{
+  href: string;
+  children: React.ReactNode;
+  onClick: () => void;
+}> = ({ href, children, onClick }) => (
+  <motion.a
+    href={href}
+    className="block px-4 py-2 text-gray-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-md"
+    onClick={onClick}
+    whileTap={{ scale: 0.95 }}
+  >
+    {children}
   </motion.a>
 );
 
 const Navbar: React.FC = () => {
   const [hasToken, setHasToken] = useState(false);
   const [isHomePage, setIsHomePage] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     setHasToken(!!token);
     setIsHomePage(window.location.pathname === "/");
-
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   return (
     <motion.header
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-white/80 backdrop-blur-md shadow-lg" : "bg-transparent"
+      className={`sticky top-0 z-50 transition-all duration-300
+       bg-white/80 backdrop-blur-md shadow-lg
       }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
@@ -59,18 +69,18 @@ const Navbar: React.FC = () => {
           >
             <div className="relative">
               <motion.div
-                className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-indigo-700 rounded-lg blur opacity-30 group-hover:opacity-100 transition duration-200"
+                className="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg blur opacity-30 group-hover:opacity-100 transition duration-200"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
               />
-              <QrCode className="h-10 w-10 text-indigo-600 relative" />
+              <QrCode className="h-10 w-10 text-emerald-600 relative" />
             </div>
-            <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-indigo-800">
+            <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-teal-600">
               AttendSync
             </span>
           </motion.div>
 
-          {/* Navigation Section */}
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
             <AnimatePresence mode="wait">
               <motion.div
@@ -91,7 +101,7 @@ const Navbar: React.FC = () => {
                     >
                       <Button
                         variant="ghost"
-                        className="text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 border border-transparent hover:border-indigo-100 transition-colors duration-200"
+                        className="text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 border border-transparent hover:border-emerald-100 transition-colors duration-200"
                         onClick={() => (window.location.href = "/auth/login")}
                       >
                         Login
@@ -103,7 +113,7 @@ const Navbar: React.FC = () => {
                     >
                       <Button
                         variant="outline"
-                        className="border-indigo-200 text-indigo-600 hover:bg-indigo-50 hover:border-indigo-300 transition-colors duration-200"
+                        className="border-emerald-200 text-emerald-600 hover:bg-emerald-50 hover:border-emerald-300 transition-colors duration-200"
                         onClick={() => (window.location.href = "/auth/signup")}
                       >
                         Sign Up
@@ -118,9 +128,9 @@ const Navbar: React.FC = () => {
                     whileTap={{ scale: 0.95 }}
                     className="relative group"
                   >
-                    <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg blur opacity-30 group-hover:opacity-100 transition duration-200" />
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-lg blur opacity-30 group-hover:opacity-100 transition duration-200" />
                     <Button
-                      className="relative bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+                      className="relative bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
                       onClick={() => (window.location.href = "/home")}
                     >
                       Get Started
@@ -131,11 +141,12 @@ const Navbar: React.FC = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="relative group"
+                    onClick={() => (window.location.href = "/home")}
                   >
-                    <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full blur opacity-0 group-hover:opacity-30 transition duration-200" />
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-full blur opacity-0 group-hover:opacity-30 transition duration-200" />
                     <Button
                       variant="ghost"
-                      className="relative p-2 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors duration-200"
+                      className="relative p-2 text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-full transition-colors duration-200"
                     >
                       <UserCircle className="h-6 w-6" />
                     </Button>
@@ -144,8 +155,80 @@ const Navbar: React.FC = () => {
               </motion.div>
             </AnimatePresence>
           </nav>
+
+          {/* Mobile Menu Button */}
+          <motion.button
+            className="md:hidden p-2 rounded-md text-gray-600 hover:text-emerald-600 hover:bg-emerald-50"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            whileTap={{ scale: 0.95 }}
+          >
+            {isMobileMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </motion.button>
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            className="md:hidden"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <div className="px-4 pt-2 pb-4 space-y-2 bg-white shadow-lg">
+              <MobileNavLink href="/docs" onClick={closeMobileMenu}>
+                Docs
+              </MobileNavLink>
+              <MobileNavLink href="/support" onClick={closeMobileMenu}>
+                Support
+              </MobileNavLink>
+
+              {!hasToken && (
+                <div className="space-y-2 pt-2">
+                  <Button
+                    variant="ghost"
+                    className="w-full text-gray-700 hover:text-emerald-600 hover:bg-emerald-50"
+                    onClick={() => {
+                      closeMobileMenu();
+                      window.location.href = "/auth/login";
+                    }}
+                  >
+                    Login
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full border-emerald-200 text-emerald-600 hover:bg-emerald-50 hover:border-emerald-300"
+                    onClick={() => {
+                      closeMobileMenu();
+                      window.location.href = "/auth/signup";
+                    }}
+                  >
+                    Sign Up
+                  </Button>
+                </div>
+              )}
+
+              {isHomePage && (
+                <Button
+                  className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white"
+                  onClick={() => {
+                    closeMobileMenu();
+                    window.location.href = "/home";
+                  }}
+                >
+                  Get Started
+                </Button>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 };

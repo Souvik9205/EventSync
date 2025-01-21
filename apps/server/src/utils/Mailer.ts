@@ -146,76 +146,76 @@ export const EmailSent = async (
     </table>
   </body>
 </html>`;
-  const TicketEmailTemplate = `<html>
-  <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EventSync Email Templates</title>
-  <style>
-      body {
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      padding: 0;
-      color: #333;
-      }
-      .container {
-      max-width: 600px;
-      margin: 0 auto;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-      }
-      .header {
-      padding: 20px;
-      text-align: center;
-      font-size: 24px;
-      font-weight: bold;
-      }
-      .content {
-      padding: 30px;
-      text-align: center;
-      }
-      .footer {
-      padding: 20px;
-      text-align: center;
-      font-size: 12px;
-      }
-      .code {
-      padding: 20px;
-      font-size: 24px;
-      font-weight: bold;
-      border-radius: 5px;
-      margin-top: 20px;
-      }
-      .note {
-      font-size: 14px;
-      margin-top: 20px;
-      }
-  </style>
-  </head>
-  <body>
-      <table role="presentation" style="width: 100%; padding: 40px 0; background-color: #f4f1f1;">
-          <tr>
-          <td style="text-align: center;">
-              <div class="container" style="background-color: #34a853; color: #ffffff;">
-              <div class="header" style="background-color: #2a9134;">EventSync</div>
-              <div class="content">
-                  <h1 style="font-size: 32px; margin-bottom: 10px;">Ticket Confirmation</h1>
-                  <p>Thank you for booking your ticket with EventSync! Your ticket has been successfully confirmed. Details are below:</p>
-                  <div class="code" style="background-color: #c3e6cb; color: #2a9134;">
-                  Event: ${data!.eventName || "N/A"}<br>
-                  Date: ${data!.eventDate || "N/A"}<br>
-                  Venue: ${data!.eventVenue || "N/A"}
-                  </div>
-                  <p class="note" style="color: #c3e6cb;">If you have any questions, please contact our support team.</p>
-              </div>
-              <div class="footer" style="background-color: #2a9134; color: #c3e6cb;">© 2024 EventSync. All rights reserved.</div>
-              </div>
-          </td>
-          </tr>
-      </table>
-    </body>
-  </html>`;
+  // const TicketEmailTemplate = `<html>
+  // <head>
+  // <meta charset="UTF-8">
+  // <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  // <title>EventSync Email Templates</title>
+  // <style>
+  //     body {
+  //     font-family: 'Arial', sans-serif;
+  //     margin: 0;
+  //     padding: 0;
+  //     color: #333;
+  //     }
+  //     .container {
+  //     max-width: 600px;
+  //     margin: 0 auto;
+  //     border-radius: 8px;
+  //     overflow: hidden;
+  //     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  //     }
+  //     .header {
+  //     padding: 20px;
+  //     text-align: center;
+  //     font-size: 24px;
+  //     font-weight: bold;
+  //     }
+  //     .content {
+  //     padding: 30px;
+  //     text-align: center;
+  //     }
+  //     .footer {
+  //     padding: 20px;
+  //     text-align: center;
+  //     font-size: 12px;
+  //     }
+  //     .code {
+  //     padding: 20px;
+  //     font-size: 24px;
+  //     font-weight: bold;
+  //     border-radius: 5px;
+  //     margin-top: 20px;
+  //     }
+  //     .note {
+  //     font-size: 14px;
+  //     margin-top: 20px;
+  //     }
+  // </style>
+  // </head>
+  // <body>
+  //     <table role="presentation" style="width: 100%; padding: 40px 0; background-color: #f4f1f1;">
+  //         <tr>
+  //         <td style="text-align: center;">
+  //             <div class="container" style="background-color: #34a853; color: #ffffff;">
+  //             <div class="header" style="background-color: #2a9134;">EventSync</div>
+  //             <div class="content">
+  //                 <h1 style="font-size: 32px; margin-bottom: 10px;">Ticket Confirmation</h1>
+  //                 <p>Thank you for booking your ticket with EventSync! Your ticket has been successfully confirmed. Details are below:</p>
+  //                 <div class="code" style="background-color: #c3e6cb; color: #2a9134;">
+  //                 Event: ${data!.eventName || "N/A"}<br>
+  //                 Date: ${data!.eventDate || "N/A"}<br>
+  //                 Venue: ${data!.eventVenue || "N/A"}
+  //                 </div>
+  //                 <p class="note" style="color: #c3e6cb;">If you have any questions, please contact our support team.</p>
+  //             </div>
+  //             <div class="footer" style="background-color: #2a9134; color: #c3e6cb;">© 2024 EventSync. All rights reserved.</div>
+  //             </div>
+  //         </td>
+  //         </tr>
+  //     </table>
+  //   </body>
+  // </html>`;
   //   const emailTemplates = [
   //     // Template 1: Email Verify for Signup
   //     `<html>

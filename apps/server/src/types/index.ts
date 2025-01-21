@@ -58,6 +58,17 @@ export interface GetEvent {
   };
 }
 
+export interface GetEventAttendees {
+  status: number;
+  data: {
+    message: string | null;
+    event: {
+      attendees: any;
+      createdById: string;
+    } | null;
+  };
+}
+
 export interface CustomField {
   id: string;
   eventId: string;

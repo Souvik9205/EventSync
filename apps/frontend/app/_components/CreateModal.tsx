@@ -1,5 +1,15 @@
 import React, { useState } from "react";
-import { X } from "lucide-react";
+import {
+  Building2,
+  Calendar,
+  Clock,
+  Image,
+  Link2,
+  MapPin,
+  Plus,
+  Users,
+  X,
+} from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -15,25 +25,6 @@ import { BACKEND_URL } from "../secret";
 interface CustomField {
   fieldName: string;
   fieldType: string;
-}
-
-interface EventFormData {
-  name: string;
-  description: string;
-  organization: string;
-  eventDate: string;
-  eventTime: string;
-  location: string;
-  orgImgURL: string;
-  tickets: string;
-  customFields?: CustomField[];
-  additionalData: string;
-}
-
-interface EventCreationModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onEventCreated?: (event: any) => void;
 }
 
 export const EventCreationModal: React.FC<EventCreationModalProps> = ({
@@ -147,229 +138,303 @@ export const EventCreationModal: React.FC<EventCreationModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Create New Event</DialogTitle>
-          <DialogDescription>
-            Fill out the details for your new event
+          <DialogTitle className="text-2xl font-bold text-emerald-900">
+            Create New Event
+          </DialogTitle>
+          <DialogDescription className="text-gray-600">
+            Fill out the details for your new event. Fields marked with * are
+            required.
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Event Name *
-            </label>
-            <Input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              className="mt-1"
-            />
-          </div>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Basic Information Section */}
+          <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
+            <h3 className="text-lg font-semibold text-emerald-800 mb-4">
+              Basic Information
+            </h3>
 
-          <div>
-            <label
-              htmlFor="description"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Description
-            </label>
-            <Textarea
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              className="mt-1"
-            />
-          </div>
+            <div className="space-y-4">
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Event Name *
+                </label>
+                <Input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  className="transition-all duration-200 focus:ring-emerald-500"
+                  placeholder="Enter event name"
+                />
+              </div>
 
-          <div>
-            <label
-              htmlFor="additionalData"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Additional Details/URL
-            </label>
-            <Textarea
-              id="additionalData"
-              name="additionalData"
-              value={formData.additionalData}
-              onChange={handleChange}
-              className="mt-1"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="organization"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Organization *
-            </label>
-            <Input
-              type="text"
-              id="organization"
-              name="organization"
-              value={formData.organization}
-              onChange={handleChange}
-              required
-              className="mt-1"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="Organization Image"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Organization Image
-            </label>
-            <Input
-              type="text"
-              id="orgImgURL"
-              name="orgImgURL"
-              value={formData.orgImgURL}
-              onChange={handleChange}
-              className="mt-1"
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label
-                htmlFor="eventDate"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Event Date *
-              </label>
-              <Input
-                type="date"
-                id="eventDate"
-                name="eventDate"
-                value={formData.eventDate}
-                onChange={handleChange}
-                required
-                className="mt-1"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="eventTime"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Event Time *
-              </label>
-              <Input
-                type="time"
-                id="eventTime"
-                name="eventTime"
-                value={formData.eventTime}
-                onChange={handleChange}
-                required
-                className="mt-1"
-              />
+              <div>
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Description
+                </label>
+                <Textarea
+                  id="description"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  className="min-h-[100px] transition-all duration-200 focus:ring-emerald-500"
+                  placeholder="Describe your event"
+                />
+              </div>
             </div>
           </div>
 
-          <div>
-            <label
-              htmlFor="location"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Location *
-            </label>
-            <Input
-              type="text"
-              id="location"
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-              required
-              className="mt-1"
-            />
+          {/* Organization Details */}
+          <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
+            <h3 className="text-lg font-semibold text-emerald-800 mb-4">
+              Organization Details
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label
+                  htmlFor="organization"
+                  className="text-sm font-medium text-gray-700 mb-1 flex items-center"
+                >
+                  <Building2 className="w-4 h-4 mr-2 text-emerald-600" />
+                  Organization *
+                </label>
+                <Input
+                  type="text"
+                  id="organization"
+                  name="organization"
+                  value={formData.organization}
+                  onChange={handleChange}
+                  required
+                  className="transition-all duration-200 focus:ring-emerald-500"
+                  placeholder="Organization name"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="orgImgURL"
+                  className="text-sm font-medium text-gray-700 mb-1 flex items-center"
+                >
+                  <Image className="w-4 h-4 mr-2 text-emerald-600" />
+                  Organization Image URL
+                </label>
+                <Input
+                  type="text"
+                  id="orgImgURL"
+                  name="orgImgURL"
+                  value={formData.orgImgURL}
+                  onChange={handleChange}
+                  className="transition-all duration-200 focus:ring-emerald-500"
+                  placeholder="https://..."
+                />
+              </div>
+            </div>
           </div>
 
-          <div>
-            <label
-              htmlFor="tickets"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Total Tickets
-            </label>
-            <Input
-              type="number"
-              id="tickets"
-              name="tickets"
-              value={formData.tickets}
-              onChange={handleChange}
-              className="mt-1"
-            />
+          {/* Date, Time, and Location */}
+          <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
+            <h3 className="text-lg font-semibold text-emerald-800 mb-4">
+              Event Details
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label
+                  htmlFor="eventDate"
+                  className="text-sm font-medium text-gray-700 mb-1 flex items-center"
+                >
+                  <Calendar className="w-4 h-4 mr-2 text-emerald-600" />
+                  Event Date *
+                </label>
+                <Input
+                  type="date"
+                  id="eventDate"
+                  name="eventDate"
+                  value={formData.eventDate}
+                  onChange={handleChange}
+                  required
+                  className="transition-all duration-200 focus:ring-emerald-500"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="eventTime"
+                  className="text-sm font-medium text-gray-700 mb-1 flex items-center"
+                >
+                  <Clock className="w-4 h-4 mr-2 text-emerald-600" />
+                  Event Time *
+                </label>
+                <Input
+                  type="time"
+                  id="eventTime"
+                  name="eventTime"
+                  value={formData.eventTime}
+                  onChange={handleChange}
+                  required
+                  className="transition-all duration-200 focus:ring-emerald-500"
+                />
+              </div>
+
+              <div className="md:col-span-2">
+                <label
+                  htmlFor="location"
+                  className="text-sm font-medium text-gray-700 mb-1 flex items-center"
+                >
+                  <MapPin className="w-4 h-4 mr-2 text-emerald-600" />
+                  Location *
+                </label>
+                <Input
+                  type="text"
+                  id="location"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleChange}
+                  required
+                  className="transition-all duration-200 focus:ring-emerald-500"
+                  placeholder="Event location"
+                />
+              </div>
+            </div>
           </div>
 
-          <div className="mt-4">
-            <div className="flex justify-between items-center mb-2">
-              <h3 className="text-sm font-medium text-gray-700">
-                Custom Fields
+          {/* Additional Information */}
+          <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
+            <h3 className="text-lg font-semibold text-emerald-800 mb-4">
+              Additional Information
+            </h3>
+
+            <div className="space-y-4">
+              <div>
+                <label
+                  htmlFor="tickets"
+                  className="text-sm font-medium text-gray-700 mb-1 flex items-center"
+                >
+                  <Users className="w-4 h-4 mr-2 text-emerald-600" />
+                  Total Tickets
+                </label>
+                <Input
+                  type="number"
+                  id="tickets"
+                  name="tickets"
+                  value={formData.tickets}
+                  onChange={handleChange}
+                  className="transition-all duration-200 focus:ring-emerald-500"
+                  placeholder="Number of tickets available"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="additionalData"
+                  className="text-sm font-medium text-gray-700 mb-1 flex items-center"
+                >
+                  <Link2 className="w-4 h-4 mr-2 text-emerald-600" />
+                  Additional Details/URL
+                </label>
+                <Textarea
+                  id="additionalData"
+                  name="additionalData"
+                  value={formData.additionalData}
+                  onChange={handleChange}
+                  className="transition-all duration-200 focus:ring-emerald-500"
+                  placeholder="Any additional information or relevant links"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Custom Fields Section */}
+          <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-emerald-800">
+                Registration Form Fields
               </h3>
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
                 onClick={addCustomField}
+                className="hover:bg-emerald-50 border-emerald-500 text-emerald-600"
               >
-                Add Custom Field
+                <Plus className="w-4 h-4 mr-2" /> Add Field
               </Button>
             </div>
 
-            {customFields.map((field, index) => (
-              <div key={index} className="flex items-center space-x-2 mb-2">
-                <Input
-                  type="text"
-                  placeholder="Field Name"
-                  value={field.fieldName}
-                  onChange={(e) =>
-                    updateCustomField(index, { fieldName: e.target.value })
-                  }
-                  className="flex-grow"
-                />
-                <select
-                  value={field.fieldType}
-                  onChange={(e) =>
-                    updateCustomField(index, { fieldType: e.target.value })
-                  }
-                  className="border rounded p-2"
+            <div className="space-y-3">
+              {customFields.map((field, index) => (
+                <div
+                  key={index}
+                  className="flex items-center space-x-2 bg-white p-3 rounded-md shadow-sm"
                 >
-                  <option value="">Select Type</option>
-                  <option value="text">Text</option>
-                  <option value="number">Number</option>
-                  <option value="date">Date</option>
-                </select>
-                <Button
-                  type="button"
-                  variant="destructive"
-                  size="icon"
-                  onClick={() => removeCustomField(index)}
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-            ))}
+                  <Input
+                    type="text"
+                    placeholder="Field Name"
+                    value={field.fieldName}
+                    onChange={(e) =>
+                      updateCustomField(index, { fieldName: e.target.value })
+                    }
+                    className="flex-grow transition-all duration-200 focus:ring-emerald-500"
+                  />
+                  <select
+                    value={field.fieldType}
+                    onChange={(e) =>
+                      updateCustomField(index, { fieldType: e.target.value })
+                    }
+                    className="border rounded-md p-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  >
+                    <option value="">Type</option>
+                    <option value="text">Text</option>
+                    <option value="number">Number</option>
+                    <option value="date">Date</option>
+                  </select>
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="icon"
+                    onClick={() => removeCustomField(index)}
+                    className="hover:bg-red-600"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
+          {error && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-md text-red-600 text-sm">
+              {error}
+            </div>
+          )}
 
-          <div className="flex justify-end space-x-2 mt-4">
-            <Button type="button" variant="outline" onClick={onClose}>
+          <div className="flex justify-end space-x-3 pt-4 border-t">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onClose}
+              className="hover:bg-gray-50"
+            >
               Cancel
             </Button>
-            <Button type="submit">Create Event</Button>
+            <Button
+              type="submit"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white"
+            >
+              Create Event
+            </Button>
           </div>
         </form>
       </DialogContent>

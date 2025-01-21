@@ -5,7 +5,14 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import EventCreationModal from "../_components/CreateModal";
 import { toast } from "sonner";
-import { Users, Calendar, PlusCircle, Edit } from "lucide-react";
+import {
+  Users,
+  Calendar,
+  PlusCircle,
+  Edit,
+  QrCode,
+  LogOut,
+} from "lucide-react";
 import {
   Table,
   TableBody,
@@ -14,20 +21,27 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import Image from "next/image";
 import EditProfileModal from "../_components/UpdateUserModal";
 import { BACKEND_URL } from "../secret";
 import Navbar from "../_components/Navbar";
 
-const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    timeZone: "UTC",
-  });
+const formatDate = (
+  dateString: string,
+  variant: "date-only" | "full" = "full"
+) => {
+  const options: Intl.DateTimeFormatOptions =
+    variant === "date-only"
+      ? { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" }
+      : {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          timeZone: "UTC",
+        };
+
+  return new Date(dateString).toLocaleString("en-US", options);
 };
 
 const UserProfilePage = () => {
@@ -103,38 +117,52 @@ const UserProfilePage = () => {
     setIsModalOpen(true);
   };
 
+  const truncateText = (text: string, maxLength: number) => {
+    if (text.length <= maxLength) return text;
+    return text.slice(0, maxLength) + "...";
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-white flex items-center justify-center">
-        <div className="animate-pulse text-indigo-600 text-2xl">
-          Loading profile...
-        </div>
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            rotate: [0, 180, 360],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="text-indigo-600 text-2xl"
+        >
+          <QrCode className="h-12 w-12" />
+        </motion.div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-white flex items-center justify-center text-red-500">
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-white flex items-center justify-center text-red-500">
         {error}
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-white">
-      {/* Header */}
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-white">
       <Navbar />
 
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-16">
+      <main className="container mx-auto px-4 py-4 md:py-16">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="bg-white rounded-xl shadow-lg p-8 mb-8"
         >
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
             <div className="flex items-center space-x-4">
               {user?.imgURL ? (
                 <img
@@ -151,28 +179,37 @@ const UserProfilePage = () => {
               )}
 
               <div>
-                <h1 className="text-3xl font-bold text-indigo-900">
-                  {user?.name || "User Profile"}
+                <h1 className="text-3xl font-bold text-emerald-900">
+                  {user?.name}
                 </h1>
                 <p className="text-gray-600">{user?.email}</p>
               </div>
             </div>
-            <Button
-              variant="outline"
-              className="border-indigo-500 text-indigo-700 hover:bg-indigo-50"
-              onClick={() => setIsEditModalOpen(true)}
-            >
-              <Edit className="mr-2 h-5 w-5" /> Edit Profile
-            </Button>
+            <div className="flex gap-4 items-center">
+              <Button
+                variant="outline"
+                className="border-emerald-500 text-emerald-700 hover:bg-emerald-50"
+                onClick={() => setIsEditModalOpen(true)}
+              >
+                <Edit className="mr-2 h-5 w-5" /> Edit Profile
+              </Button>
+              <LogOut
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  router.push("/");
+                }}
+                className="text-emerald-600 cursor-pointer hover:text-red-700 hover:scale-110 transition duration-300"
+              />
+            </div>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="bg-indigo-50 p-6 rounded-xl"
+              className="bg-emerald-50 p-4 md:p-6 rounded-xl"
             >
-              <Calendar className="h-8 w-8 text-indigo-600 mb-4" />
-              <h3 className="text-xl font-semibold text-indigo-900 mb-2">
+              <Calendar className="h-8 w-8 text-emerald-600 mb-4" />
+              <h3 className="text-xl font-semibold text-emerald-900 mb-2">
                 Joined
               </h3>
               <p className="text-gray-700">
@@ -182,7 +219,7 @@ const UserProfilePage = () => {
 
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="bg-teal-50 p-6 rounded-xl"
+              className="bg-teal-50 p-4 md:p-6 rounded-xl"
             >
               <Users className="h-8 w-8 text-teal-600 mb-4" />
               <h3 className="text-xl font-semibold text-teal-900 mb-2">
@@ -193,7 +230,7 @@ const UserProfilePage = () => {
 
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="bg-purple-50 p-6 rounded-xl"
+              className="bg-purple-50 p-4 md:p-6 rounded-xl"
             >
               <Calendar className="h-8 w-8 text-purple-600 mb-4" />
               <h3 className="text-xl font-semibold text-purple-900 mb-2">
@@ -214,12 +251,13 @@ const UserProfilePage = () => {
           className="bg-white rounded-xl shadow-lg p-8"
         >
           <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl font-bold text-indigo-900">My Events</h2>
+            <h2 className="text-3xl font-bold text-emerald-900">My Events</h2>
             <Button
               onClick={handleCreateEvent}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white"
             >
-              <PlusCircle className="mr-2 h-5 w-5" /> Create Event
+              <PlusCircle className="md:mr-2 h-5 w-5" />
+              <span className="hidden md:inline">Create Event</span>
             </Button>
           </div>
 
@@ -233,7 +271,7 @@ const UserProfilePage = () => {
               </p>
               <Button
                 onClick={handleCreateEvent}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white"
               >
                 <PlusCircle className="mr-2 h-5 w-5" /> Create First Event
               </Button>
@@ -243,24 +281,40 @@ const UserProfilePage = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead>Name</TableHead>
-                  <TableHead>Description</TableHead>
-                  <TableHead>Date & Time</TableHead>
+                  <TableHead className="hidden md:table-cell">
+                    Description
+                  </TableHead>
+                  <TableHead className="hidden md:table-cell">
+                    Date & Time
+                  </TableHead>
+                  <TableHead>Date</TableHead>
                   <TableHead>Organization</TableHead>
-                  <TableHead>Created At</TableHead>
+                  <TableHead className="hidden md:table-cell">
+                    Created At
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {events.map((event) => (
                   <TableRow
                     key={event.id}
-                    className="cursor-pointer hover:bg-indigo-50 transition-colors"
+                    className="cursor-pointer hover:bg-emerald-50 transition-colors"
                     onClick={() => router.push(`/event/${event.id}`)}
                   >
                     <TableCell>{event.name}</TableCell>
-                    <TableCell>{event.description}</TableCell>
-                    <TableCell>{formatDate(event.dateTime)}</TableCell>
+                    <TableCell className="hidden md:table-cell">
+                      {truncateText(event.description, 100)}
+                    </TableCell>
+                    <TableCell className="hidden md:table-cell">
+                      {formatDate(event.dateTime)}
+                    </TableCell>
+                    <TableCell>
+                      {formatDate(event.dateTime, "date-only")}
+                    </TableCell>
                     <TableCell>{event.organization}</TableCell>
-                    <TableCell>{formatDate(event.createdAt)}</TableCell>
+                    <TableCell className="hidden md:table-cell">
+                      {formatDate(event.createdAt)}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -268,13 +322,6 @@ const UserProfilePage = () => {
           )}
         </motion.div>
       </main>
-
-      {/* Footer */}
-      <footer className="bg-indigo-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p>© 2024 AttendSync. Revolutionizing Attendance Tracking.</p>
-        </div>
-      </footer>
 
       <EventCreationModal
         isOpen={isModalOpen}

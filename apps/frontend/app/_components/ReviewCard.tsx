@@ -5,19 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
 
-interface Review {
-  id: string;
-  eventId: string;
-  participants: number;
-  Review: number;
-}
-
-interface ReviewCardProps {
-  reviews: Review[];
-  eventId: string;
-  onReviewSubmit: (rating: number) => Promise<void>;
-}
-
 const ReviewCard: React.FC<ReviewCardProps> = ({
   reviews,
   eventId,
@@ -123,7 +110,6 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
             </div>
           )}
 
-          {/* Rating Input Section */}
           <AnimatePresence>
             {isExpanded && (
               <motion.div
@@ -131,7 +117,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="overflow-hidden"
+                className="overflow-hidden mb-12"
               >
                 <div className="pt-4 border-t border-gray-100 space-y-4">
                   <div className="flex justify-center gap-2">
@@ -179,6 +165,82 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
               </motion.div>
             )}
           </AnimatePresence>
+        </motion.div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export const RattingSimpleCard: React.FC<EventReviewCardProps> = ({
+  review,
+}) => {
+  if (!review || review.length === 0) {
+    return (
+      <Card className="backdrop-blur-xl bg-white/95 shadow-xl border-0 overflow-hidden">
+        <CardContent className="p-6">
+          <motion.div
+            className="flex items-center gap-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            <StarOff className="h-5 w-5 text-gray-300" />
+            <span className="text-sm text-gray-500">No ratings yet</span>
+          </motion.div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="backdrop-blur-xl bg-white/95 shadow-xl border-0 overflow-hidden">
+      <CardContent className="p-6">
+        <motion.div
+          className="flex items-center gap-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          <motion.div
+            className="shrink-0"
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+              {Number(review[0].Review).toFixed(2)}
+            </div>
+          </motion.div>
+
+          <div className="h-12 w-px bg-gradient-to-b from-emerald-100 to-teal-100" />
+
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-1">
+              {Array.from({ length: 5 }, (_, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <Star
+                    className={`h-5 w-5 ${
+                      index < Math.round(review[0].Review)
+                        ? "text-yellow-400 fill-yellow-400"
+                        : "text-gray-200"
+                    }`}
+                  />
+                </motion.div>
+              ))}
+            </div>
+            <motion.div
+              className="text-sm text-gray-500"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              {review[0].participants} rating
+              {review[0].participants > 1 ? "s" : ""}
+            </motion.div>
+          </div>
         </motion.div>
       </CardContent>
     </Card>

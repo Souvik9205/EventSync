@@ -24,6 +24,12 @@ interface Review {
   Review: number;
 }
 
+interface EventAttendees {
+  attendees: Attendee[];
+  createdById: string;
+  customFields: CustomField[];
+}
+
 interface Event {
   id: string;
   name: string;
@@ -65,4 +71,50 @@ interface QRCodeModalProps {
   setShowQRCode: (value: boolean) => void;
   shareUrl: string;
   title: string;
+}
+
+interface Review {
+  id: string;
+  eventId: string;
+  participants: number;
+  Review: number;
+}
+
+interface ReviewCardProps {
+  reviews: Review[];
+  eventId: string;
+  onReviewSubmit: (rating: number) => Promise<void>;
+}
+
+interface ReviewData {
+  Review: number;
+  participants: number;
+}
+
+interface EventReviewCardProps {
+  review?: ReviewData[];
+}
+
+interface SidebarProps {
+  isOpen: boolean;
+  onOpenChange: (isOpen: boolean) => void;
+}
+
+interface EventFormData {
+  name: string;
+  description: string;
+  organization: string;
+  eventDate: string;
+  eventTime: string;
+  location: string;
+  orgImgURL: string;
+  tickets: string;
+  customFields?: CustomField[];
+  additionalData: string;
+}
+
+interface EventCreationModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onEventCreated?: (event: any) => void;
 }

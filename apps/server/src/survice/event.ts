@@ -1,5 +1,5 @@
 import { Decimal } from "@prisma/client/runtime/library";
-import { CreateEvent, GetEvent, GetReview } from "../types";
+import { CreateEvent, GetEvent, GetEventAttendees, GetReview } from "../types";
 import { decodeToken } from "../utils/DecodeToken";
 import prisma from "../utils/PrismaClient";
 
@@ -345,6 +345,72 @@ export const getEventFields = async (eventId: string): Promise<any> => {
           ...event,
           dateTime: event.dateTime.toISOString(),
         },
+      },
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      data: {
+        message: "Internal server error",
+        event: null,
+      },
+    };
+  }
+};
+
+export const getEventAttendees = async (
+  token: string,
+  eventId: string
+): Promise<GetEventAttendees> => {
+  try {
+    const id = decodeToken(token);
+    const user = await prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!user) {
+      return {
+        status: 404,
+        data: {
+          message: "User not found",
+          event: null,
+        },
+      };
+    }
+    const event = await prisma.event.findUnique({
+      where: {
+        id: eventId,
+      },
+      select: {
+        createdById: true,
+        attendees: true,
+        customFields: true,
+      },
+    });
+    if (!event) {
+      return {
+        status: 404,
+        data: {
+          message: "Event not found",
+          event: null,
+        },
+      };
+    }
+    if (event.createdById !== id) {
+      return {
+        status: 403,
+        data: {
+          message: "You are not authorized to view this event",
+          event: null,
+        },
+      };
+    }
+    return {
+      status: 200,
+      data: {
+        message: null,
+        event,
       },
     };
   } catch (error) {

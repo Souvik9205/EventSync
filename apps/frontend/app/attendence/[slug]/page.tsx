@@ -19,7 +19,9 @@ import { Input } from "@/components/ui/input";
 import { Formik, Form, Field, FieldProps } from "formik";
 import * as Yup from "yup";
 import { BACKEND_URL } from "@/app/secret";
-import Loading from "@/app/_components/Loading";
+import { EventLoadingState } from "@/app/_components/Loading";
+import { EventNotFound } from "@/app/_components/NotEvent";
+import Navbar from "@/app/_components/Navbar";
 
 function EventFormPage() {
   const router = useRouter();
@@ -182,49 +184,11 @@ function EventFormPage() {
   };
 
   if (loading) {
-    <Loading />;
+    <EventLoadingState />;
   }
 
   if (error) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-white">
-        <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md shadow-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <div className="flex items-center space-x-3">
-              <QrCode className="h-10 w-10 text-indigo-600" />
-              <span className="text-2xl font-bold text-indigo-800">
-                AttendSync
-              </span>
-            </div>
-            <Button
-              variant="ghost"
-              onClick={() => router.back()}
-              className="text-indigo-700 hover:bg-indigo-50"
-            >
-              <ArrowLeft className="mr-2 h-5 w-5" /> Back
-            </Button>
-          </div>
-        </header>
-
-        <main className="container mx-auto px-4 py-16">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-2xl mx-auto text-center"
-          >
-            <AlertCircle className="h-16 w-16 text-red-500 mx-auto mb-4" />
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">{error}</h2>
-            <Button
-              onClick={() => router.push("/home")}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white"
-            >
-              Return to Home
-            </Button>
-          </motion.div>
-        </main>
-      </div>
-    );
+    <EventNotFound />;
   }
 
   if (!event) return null;
@@ -232,26 +196,10 @@ function EventFormPage() {
   const eventDate = new Date(event.dateTime);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-white">
-      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-3">
-            <QrCode className="h-10 w-10 text-indigo-600" />
-            <span className="text-2xl font-bold text-indigo-800">
-              AttendSync
-            </span>
-          </div>
-          <Button
-            variant="ghost"
-            onClick={() => router.back()}
-            className="text-indigo-700 hover:bg-indigo-50"
-          >
-            <ArrowLeft className="mr-2 h-5 w-5" /> Back
-          </Button>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-white">
+      <Navbar />
 
-      <main className="container mx-auto px-4 py-16">
+      <main className="container mx-auto px-4 py-4">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -281,27 +229,27 @@ function EventFormPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 bg-indigo-50 p-4 rounded-lg">
+                <div className="grid grid-cols-2 gap-4 bg-emerald-50 p-4 rounded-lg">
                   <div className="flex items-center space-x-2">
-                    <Calendar className="h-5 w-5 text-indigo-600" />
+                    <Calendar className="h-5 w-5 text-emerald-600" />
                     <span className="text-sm text-gray-600">
                       {eventDate.toLocaleDateString()}
                     </span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Clock className="h-5 w-5 text-indigo-600" />
+                    <Clock className="h-5 w-5 text-emerald-600" />
                     <span className="text-sm text-gray-600">
                       {eventDate.toLocaleTimeString()}
                     </span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <MapPin className="h-5 w-5 text-indigo-600" />
+                    <MapPin className="h-5 w-5 text-emerald-600" />
                     <span className="text-sm text-gray-600">
                       {event.location}
                     </span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Building2 className="h-5 w-5 text-indigo-600" />
+                    <Building2 className="h-5 w-5 text-emerald-600" />
                     <span className="text-sm text-gray-600">
                       {event.organization}
                     </span>
@@ -316,8 +264,8 @@ function EventFormPage() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                   >
-                    <div className="bg-indigo-50 p-4 rounded-lg mb-6">
-                      <p className="text-sm text-indigo-700">
+                    <div className="bg-emerald-50 p-4 rounded-lg mb-6">
+                      <p className="text-sm text-emerald-700">
                         <ClipboardList className="inline-block mr-2 h-4 w-4" />
                         Please fill out the following information
                       </p>
@@ -370,7 +318,7 @@ function EventFormPage() {
                             <Button
                               type="submit"
                               disabled={isSubmitting}
-                              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white mt-8"
+                              className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-base md:text-lg font-medium py-4 md:py-6 shadow-lg transition-all duration-300 transform hover:-translate-y-1"
                             >
                               {isSubmitting
                                 ? "Submitting..."
@@ -404,7 +352,7 @@ function EventFormPage() {
                     </p>
                     <Button
                       onClick={() => router.push("/home")}
-                      className="bg-indigo-600 hover:bg-indigo-700 text-white"
+                      className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-base md:text-lg font-medium py-4 md:py-6 shadow-lg transition-all duration-300 transform hover:-translate-y-1"
                     >
                       Return to Home
                     </Button>
@@ -415,13 +363,8 @@ function EventFormPage() {
           </Card>
         </motion.div>
       </main>
-
-      <footer className="bg-indigo-900 text-white py-12 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p>© 2024 AttendSync. Revolutionizing Attendance Tracking.</p>
-        </div>
-      </footer>
     </div>
   );
 }
+
 export default EventFormPage;

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   createEventController,
+  getEventAttendenceController,
   getEventController,
   getEventFieldsController,
   GetReviewController,
@@ -14,5 +15,6 @@ eventRouter.post("/create", createEventController);
 eventRouter.get("/user/:eventId", getUserEventController);
 eventRouter.post("/review", GetReviewController);
 eventRouter.get("/fields/:eventId", getEventFieldsController);
+eventRouter.get("/attendence/:eventId", getEventAttendenceController);
 
 export default eventRouter;

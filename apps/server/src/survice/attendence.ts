@@ -1,4 +1,5 @@
 import { decodeToken } from "../utils/DecodeToken";
+import { EmailSent } from "../utils/Mailer";
 import prisma from "../utils/PrismaClient";
 
 export const registerService = async (
@@ -31,6 +32,9 @@ export const registerService = async (
         id: eventId,
       },
       select: {
+        name: true,
+        dateTime: true,
+        location: true,
         attendees: true,
         tickets: true,
       },
@@ -73,9 +77,32 @@ export const registerService = async (
         user: id,
         eventId,
         fields: data,
+        verified: false,
       },
     });
-    if (!register) {
+
+    if (register) {
+      const emailSent = await EmailSent(user.email, "", "RegisterOtp", {
+        eventName: event.name,
+        eventDate: event.dateTime,
+        eventVenue: event.location,
+        attendanceId: register.id,
+      });
+      if (!emailSent) {
+        return {
+          status: 400,
+          data: {
+            message: `Error sending email, error: ${emailSent}`,
+          },
+        };
+      }
+      return {
+        status: 200,
+        data: {
+          message: "Attendance registered successfully",
+        },
+      };
+    } else {
       return {
         status: 500,
         data: {
@@ -83,12 +110,6 @@ export const registerService = async (
         },
       };
     }
-    return {
-      status: 200,
-      data: {
-        message: "Attendance registered successfully",
-      },
-    };
   } catch (error) {
     return {
       status: 500,

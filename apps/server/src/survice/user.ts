@@ -1,4 +1,4 @@
-import { GetUser, UserEvent } from "../types";
+import { GetUser, getUserRegistedEvent, UserEvent } from "../types";
 import { decodeToken } from "../utils/DecodeToken";
 import prisma from "../utils/PrismaClient";
 
@@ -123,6 +123,66 @@ export const updateUser = async (
       status: 500,
       data: {
         message: "Internal server error",
+      },
+    };
+  }
+};
+
+export const UserRegistedEvent = async (
+  token: string
+): Promise<getUserRegistedEvent> => {
+  try {
+    const id = decodeToken(token);
+    const user = await prisma.user.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!user) {
+      return {
+        status: 404,
+        data: {
+          message: "User not found",
+          events: null,
+        },
+      };
+    }
+
+    const RegistedEvents = await prisma.event.findMany({
+      where: {
+        attendees: {
+          some: {
+            user: user.id,
+          },
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        dateTime: true,
+        organization: true,
+        createdAt: true,
+      },
+    });
+
+    return {
+      status: 200,
+      data: {
+        message: null,
+        events: RegistedEvents,
+      },
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      data: {
+        message: "Internal server error",
+        events: null,
       },
     };
   }

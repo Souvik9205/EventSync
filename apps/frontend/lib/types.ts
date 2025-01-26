@@ -10,12 +10,15 @@ interface AttendeeFields {
 }
 
 interface Attendee {
+  verified: unknown;
   id: string;
   user: string;
   eventId: string;
   timestamp: string;
   fields: AttendeeFields;
 }
+
+type CameraDevice = MediaDeviceInfo;
 
 interface Review {
   id: string;

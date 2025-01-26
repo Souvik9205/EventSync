@@ -1,5 +1,11 @@
 import { Decimal } from "@prisma/client/runtime/library";
-import { CreateEvent, GetEvent, GetEventAttendees, GetReview } from "../types";
+import {
+  CreateEvent,
+  GetEvent,
+  GetEventAttendees,
+  GetReview,
+  UpdateEvent,
+} from "../types";
 import { decodeToken } from "../utils/DecodeToken";
 import prisma from "../utils/PrismaClient";
 
@@ -42,6 +48,11 @@ export const getEvent = async (
         price: true,
         createdBy: true,
         review: true,
+        admins: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
     if (!event) {
@@ -53,7 +64,8 @@ export const getEvent = async (
         },
       };
     }
-    if (event.createdById !== id) {
+    const isAdmin = event.admins.some((admin) => admin.id === id);
+    if (event.createdById !== id && !isAdmin) {
       return {
         status: 403,
         data: {
@@ -386,6 +398,11 @@ export const getEventAttendees = async (
         createdById: true,
         attendees: true,
         customFields: true,
+        admins: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
     if (!event) {
@@ -397,7 +414,8 @@ export const getEventAttendees = async (
         },
       };
     }
-    if (event.createdById !== id) {
+    const isAdmin = event.admins.some((admin) => admin.id === id);
+    if (event.createdById !== id && !isAdmin) {
       return {
         status: 403,
         data: {
@@ -419,6 +437,247 @@ export const getEventAttendees = async (
       data: {
         message: "Internal server error",
         event: null,
+      },
+    };
+  }
+};
+
+export const updateEvent = async (
+  token: string,
+  eventId: string,
+  data: UpdateEvent
+): Promise<{
+  status: number;
+  data: {
+    message: string;
+    event: any | null;
+  };
+}> => {
+  try {
+    const id = decodeToken(token);
+
+    if (!id) {
+      return {
+        status: 401,
+        data: {
+          message: "Unauthorized",
+          event: null,
+        },
+      };
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!user) {
+      return {
+        status: 404,
+        data: {
+          message: "User not found",
+          event: null,
+        },
+      };
+    }
+
+    const authEvent = await prisma.event.findUnique({
+      where: { id: eventId },
+      select: {
+        createdById: true,
+        admins: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+
+    if (!authEvent) {
+      return {
+        status: 404,
+        data: {
+          message: "Event not found",
+          event: null,
+        },
+      };
+    }
+    const isAdmin = authEvent.admins.some((admin) => admin.id === id);
+    if (authEvent.createdById !== id && !isAdmin) {
+      return {
+        status: 403,
+        data: {
+          message: "You do not have permission to update this event",
+          event: null,
+        },
+      };
+    }
+
+    const existingEvent = await prisma.event.findUnique({
+      where: { id: eventId },
+    });
+    if (!existingEvent) {
+      return {
+        status: 404,
+        data: {
+          message: "Event not found",
+          event: null,
+        },
+      };
+    }
+
+    const updatedDateTime =
+      data.eventDate && data.eventTime
+        ? new Date(`${data.eventDate}T${data.eventTime}`)
+        : null;
+
+    if (updatedDateTime && isNaN(updatedDateTime.getTime())) {
+      return {
+        status: 400,
+        data: {
+          message: "Invalid date or time format",
+          event: null,
+        },
+      };
+    }
+
+    const updatedEvent = await prisma.event.update({
+      where: { id: eventId },
+      data: {
+        name: data.name || existingEvent.name,
+        description: data.description || existingEvent.description,
+        organization: data.organization || existingEvent.organization,
+        additionalData: data.additionalData || existingEvent.additionalData,
+        dateTime: updatedDateTime || existingEvent.dateTime,
+        tickets: data.tickets
+          ? parseInt(data.tickets, 10)
+          : existingEvent.tickets,
+        location: data.location || existingEvent.location,
+        orgImgURL: data.orgImgURL || existingEvent.orgImgURL,
+      },
+    });
+
+    return {
+      status: 200,
+      data: {
+        message: "Event updated successfully",
+        event: updatedEvent,
+      },
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      data: {
+        message: `Internal server error, ${error}`,
+        event: null,
+      },
+    };
+  }
+};
+
+export const giveOwnership = async (
+  token: string,
+  userId: string,
+  eventId: string
+): Promise<{
+  status: number;
+  data: {
+    message: string;
+  };
+}> => {
+  try {
+    const id = decodeToken(token);
+
+    if (!id) {
+      return {
+        status: 401,
+        data: {
+          message: "Unauthorized",
+        },
+      };
+    }
+
+    const requester = await prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!requester) {
+      return {
+        status: 404,
+        data: {
+          message: "Requester not found",
+        },
+      };
+    }
+    const existingEvent = await prisma.event.findUnique({
+      where: { id: eventId },
+      select: {
+        createdById: true,
+        admins: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+
+    if (!existingEvent) {
+      return {
+        status: 404,
+        data: {
+          message: "Event not found",
+        },
+      };
+    }
+
+    const isAdmin = existingEvent.admins.some((admin) => admin.id === id);
+    if (existingEvent.createdById !== id && !isAdmin) {
+      return {
+        status: 403,
+        data: {
+          message: "You do not have permission to give ownership",
+        },
+      };
+    }
+
+    const targetUser = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!targetUser) {
+      return {
+        status: 404,
+        data: {
+          message: "Target user not found",
+        },
+      };
+    }
+
+    const isAlreadyAdmin = existingEvent.admins.some(
+      (admin) => admin.id === userId
+    );
+
+    if (!isAlreadyAdmin) {
+      await prisma.event.update({
+        where: { id: eventId },
+        data: {
+          admins: {
+            connect: { id: userId },
+          },
+        },
+      });
+    }
+
+    return {
+      status: 200,
+      data: {
+        message: "Ownership granted successfully",
+      },
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      data: {
+        message: `Internal server error, ${error}`,
       },
     };
   }

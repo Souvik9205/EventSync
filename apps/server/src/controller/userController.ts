@@ -1,5 +1,10 @@
 import { Request, Response } from "express";
-import { getUser, getUserEvents, updateUser } from "../survice/user";
+import {
+  getUser,
+  getUserEvents,
+  updateUser,
+  UserRegistedEvent,
+} from "../survice/user";
 
 export const getUserController = async (
   req: Request,
@@ -58,6 +63,24 @@ export const updateUserController = async (
     res.status(result.status).json(result.data);
   } catch (error) {
     console.error("Update user error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const getUserRegisterEventsController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) {
+    res.status(401).json({ message: "Unauthorized" });
+    return;
+  }
+  try {
+    const result = await UserRegistedEvent(token);
+    res.status(result.status).json(result.data);
+  } catch (error) {
+    console.error("Get user error:", error);
     res.status(500).json({ message: "Server error" });
   }
 };

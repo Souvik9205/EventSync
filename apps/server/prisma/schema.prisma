@@ -20,6 +20,7 @@ model User {
   name      String?
   imgURL    String? 
 
+eventsOwned Event[]  @relation("EventOwnership")
   events    Event[]  @relation("UserEvents")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -35,6 +36,7 @@ model Event {
   orgImgURL    String       
   dateTime    DateTime
   location    String
+  admins      User[]    @relation("EventOwnership")
   createdBy   User      @relation("UserEvents", fields: [createdById], references: [id])
   createdById String
   additionalData String?
@@ -58,7 +60,8 @@ model Attendance {
   user      String
   eventId   String
   timestamp DateTime @default(now())
-  fields    Json    
+  fields    Json 
+  verified  Boolean 
 
   Event     Event    @relation(fields: [eventId], references: [id])
 }

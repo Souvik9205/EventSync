@@ -47,6 +47,7 @@ const formatDate = (
 const UserProfilePage = () => {
   const [user, setUser] = useState<User | null>(null);
   const [events, setEvents] = useState<Event[]>([]);
+  const [registeredEvents, setRegisteredEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -107,9 +108,39 @@ const UserProfilePage = () => {
         setLoading(false);
       }
     };
+
+    const fetchRegistedEventData = async () => {
+      setLoading(true);
+      try {
+        const registeredEventResponse = await fetch(
+          `${BACKEND_URL}/user/registered/events`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        if (!registeredEventResponse.ok) {
+          toast.error("Failed to fetch user details");
+        }
+        const registeredEventData = await registeredEventResponse.json();
+        setRegisteredEvents(registeredEventData.events);
+
+        setLoading(false);
+      } catch (error) {
+        setError(
+          error instanceof Error ? error.message : "An unknown error occurred"
+        );
+        setLoading(false);
+      }
+    };
+
     if (localStorage.getItem("token") != "") {
       fetchUserData();
       fetchUserEventData();
+      fetchRegistedEventData();
     }
   }, [isModalOpen, isEditModalOpen]);
 
@@ -303,7 +334,7 @@ const UserProfilePage = () => {
                   >
                     <TableCell>{event.name}</TableCell>
                     <TableCell className="hidden md:table-cell">
-                      {truncateText(event.description, 100)}
+                      {truncateText(event.description, 150)}
                     </TableCell>
                     <TableCell className="hidden md:table-cell">
                       {formatDate(event.dateTime)}
@@ -321,6 +352,86 @@ const UserProfilePage = () => {
             </Table>
           )}
         </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="bg-white rounded-xl shadow-lg p-8 mt-4"
+        >
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h2 className="text-3xl font-bold text-emerald-900">
+                Registered Events
+              </h2>
+              <p className="text-gray-600">Events you're participating in</p>
+            </div>
+          </div>
+
+          {registeredEvents.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-2xl text-gray-500 mb-4">
+                No events registered yet
+              </p>
+              <p className="text-gray-400 mb-6">
+                Browse events to find interesting ones to join!
+              </p>
+              <Button
+                onClick={() => router.push("/events")}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white"
+              >
+                <Calendar className="mr-2 h-5 w-5" /> Browse Events
+              </Button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {registeredEvents.map((event) => (
+                <motion.div
+                  key={event.id}
+                  whileHover={{ scale: 1.02 }}
+                  className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden cursor-pointer"
+                  onClick={() => router.push(`/event/user/${event.id}`)}
+                >
+                  <div className="p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="px-3 py-1 text-sm bg-emerald-100 text-emerald-800 rounded-full">
+                        {event.organization}
+                      </span>
+                      <time className="text-sm text-gray-500">
+                        {formatDate(event.dateTime, "date-only")}
+                      </time>
+                    </div>
+
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                      {event.name}
+                    </h3>
+
+                    <p className="text-gray-600 mb-4 line-clamp-2">
+                      {event.description}
+                    </p>
+
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center text-sm text-gray-500">
+                        <Calendar className="h-4 w-4 mr-1" />
+                        {formatDate(event.dateTime).split("at")[1]}
+                      </div>
+                      <Button
+                        variant="ghost"
+                        className="text-emerald-600 hover:text-emerald-700"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          router.push(`/event/user/${event.id}`);
+                        }}
+                      >
+                        View Details
+                      </Button>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </motion.div>
       </main>
 
       <EventCreationModal
@@ -328,7 +439,6 @@ const UserProfilePage = () => {
         onClose={() => setIsModalOpen(false)}
         onEventCreated={() => {
           toast.success("Event created successfully!");
-          // Optionally, you could refresh the events here
         }}
       />
 

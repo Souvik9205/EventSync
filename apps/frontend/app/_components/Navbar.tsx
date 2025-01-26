@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { QrCode, UserCircle, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { GITHUB_URL, PORTFOLIO_URL } from "../secret";
 
 const NavLink: React.FC<{ href: string; children: React.ReactNode }> = ({
   href,
@@ -12,6 +13,7 @@ const NavLink: React.FC<{ href: string; children: React.ReactNode }> = ({
     className="relative text-gray-600 hover:text-emerald-600 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 group"
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
+    target="_blank"
   >
     {children}
     <motion.span
@@ -30,6 +32,7 @@ const MobileNavLink: React.FC<{
     href={href}
     className="block px-4 py-2 text-gray-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-md"
     onClick={onClick}
+    target="_blank"
     whileTap={{ scale: 0.95 }}
   >
     {children}
@@ -90,8 +93,8 @@ const Navbar: React.FC = () => {
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.2 }}
               >
-                <NavLink href="/docs">Docs</NavLink>
-                <NavLink href="/support">Support</NavLink>
+                <NavLink href={GITHUB_URL}>Contribute</NavLink>
+                <NavLink href={PORTFOLIO_URL}>About Me</NavLink>
 
                 {!hasToken && (
                   <div className="flex items-center space-x-4">
@@ -182,11 +185,11 @@ const Navbar: React.FC = () => {
             transition={{ duration: 0.2 }}
           >
             <div className="px-4 pt-2 pb-4 space-y-2 bg-white shadow-lg">
-              <MobileNavLink href="/docs" onClick={closeMobileMenu}>
-                Docs
+              <MobileNavLink href={GITHUB_URL} onClick={closeMobileMenu}>
+                Contribute
               </MobileNavLink>
-              <MobileNavLink href="/support" onClick={closeMobileMenu}>
-                Support
+              <MobileNavLink href={PORTFOLIO_URL} onClick={closeMobileMenu}>
+                About Me
               </MobileNavLink>
 
               {!hasToken && (

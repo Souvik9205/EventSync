@@ -6,6 +6,8 @@ import {
   reviewEvent,
   getEventFields,
   getEventAttendees,
+  updateEvent,
+  giveOwnership,
 } from "../survice/event";
 
 export const getEventController = async (
@@ -166,6 +168,87 @@ export const getEventAttendenceController = async (
     res.status(result.status).json(result.data);
   } catch (error) {
     console.error("Get event error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const updateEventController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) {
+    res.status(401).json({ message: "Unauthorized" });
+    return;
+  }
+  const {
+    name,
+    description,
+    organization,
+    eventDate,
+    location,
+    orgImgURL,
+    eventTime,
+    tickets,
+    additionalData,
+    eventId,
+  } = req.body;
+  if (
+    !name ||
+    !organization ||
+    !eventDate ||
+    !location ||
+    !orgImgURL ||
+    !eventTime
+  ) {
+    res.status(400).json({
+      message:
+        "All required fields (name, organization, dateTime, location) must be provided.",
+    });
+    return;
+  }
+  const data = {
+    name,
+    description,
+    organization,
+    eventDate,
+    location,
+    orgImgURL,
+    eventTime,
+    tickets,
+    additionalData,
+  };
+  try {
+    const result = await updateEvent(token, eventId, data);
+    res.status(result.status).json(result.data);
+  } catch (error) {
+    console.error("Create event error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const giveOwnershipController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) {
+    res.status(401).json({ message: "Unauthorized" });
+    return;
+  }
+  const { userId, eventId } = req.body;
+  if (!userId || !eventId) {
+    res.status(400).json({
+      message: "All required fields must be provided.",
+    });
+    return;
+  }
+
+  try {
+    const result = await giveOwnership(token, userId, eventId);
+    res.status(result.status).json(result.data);
+  } catch (error) {
+    console.error("Create event error:", error);
     res.status(500).json({ message: "Server error" });
   }
 };

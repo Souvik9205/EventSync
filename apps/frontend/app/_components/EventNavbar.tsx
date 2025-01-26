@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { QrCode, UserCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { GITHUB_URL, PORTFOLIO_URL } from "../secret";
 
 const NavLink: React.FC<{ href: string; children: React.ReactNode }> = ({
   href,
@@ -11,6 +12,7 @@ const NavLink: React.FC<{ href: string; children: React.ReactNode }> = ({
     href={href}
     className="relative text-gray-600 hover:text-emerald-600 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 group"
     whileHover={{ scale: 1.05 }}
+    target="_blank"
     whileTap={{ scale: 0.95 }}
   >
     {children}
@@ -53,8 +55,8 @@ const EventNavbar: React.FC = () => {
           {/* Right Section - Navigation */}
           <div className="flex items-center space-x-6">
             <nav className="hidden md:flex items-center space-x-6">
-              <NavLink href="/docs">Docs</NavLink>
-              <NavLink href="/support">Support</NavLink>
+              <NavLink href={GITHUB_URL}>Contribute</NavLink>
+              <NavLink href={PORTFOLIO_URL}>About Me</NavLink>
             </nav>
             <motion.div
               whileHover={{ scale: 1.05 }}
@@ -65,9 +67,9 @@ const EventNavbar: React.FC = () => {
               <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-full blur opacity-0 group-hover:opacity-30 transition duration-200" />
               <Button
                 variant="ghost"
-                className="relative p-2 text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-full transition-colors duration-200"
+                className="relative hidden md:block p-2 text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-full transition-colors duration-200"
               >
-                <UserCircle className="h-6 w-6" />
+                <UserCircle className="h-8 w-8" />
               </Button>
             </motion.div>
           </div>

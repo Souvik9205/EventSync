@@ -31,6 +31,13 @@ export interface GetUser {
     } | null;
   };
 }
+export interface getUserRegistedEvent {
+  status: number;
+  data: {
+    message: string | null;
+    events: any;
+  };
+}
 
 export interface UserEvent {
   status: number;
@@ -87,6 +94,18 @@ export interface CreateEvent {
   orgImgURL: string;
   eventTime: string;
   customFields?: CustomField[];
+}
+
+export interface UpdateEvent {
+  additionalData: string | null;
+  tickets: string | null;
+  name: string | null;
+  description: string | null;
+  organization: string | null;
+  eventDate: string | null;
+  location: string | null;
+  orgImgURL: string | null;
+  eventTime: string | null;
 }
 
 export interface GetReview {

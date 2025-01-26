@@ -3,6 +3,10 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
+    "prisma_setup": "cd apps/server && npx prisma generate",
+    "get_frontend": "cd apps/frontend && npm install",
+    "get_backend": "cd apps/server && npm install",
+    "setup": "npm i && npm run get_frontend && npm run get_backend && npm run prisma_setup",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""

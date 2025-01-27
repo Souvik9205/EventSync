@@ -48,7 +48,7 @@ const EventNavbar: React.FC = () => {
               <QrCode className="h-8 w-8 text-emerald-600 relative" />
             </div>
             <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-teal-600">
-              AttendSync
+              EventSync
             </span>
           </motion.div>
 

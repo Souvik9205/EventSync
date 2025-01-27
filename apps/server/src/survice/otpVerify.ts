@@ -88,7 +88,7 @@ export const SignupOTPService = async (
       },
     });
     const token = jwt.sign({ userId: newUser.id }, JWT_SECRET as string, {
-      expiresIn: "15d",
+      expiresIn: "3d",
     });
 
     return {

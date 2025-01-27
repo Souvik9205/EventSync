@@ -18,6 +18,7 @@ const QRCodeModal: React.FC<QRCodeModalProps> = ({
   showQRCode,
   setShowQRCode,
   shareUrl,
+  orgURL,
   title,
 }) => {
   const [copied, setCopied] = useState(false);
@@ -84,7 +85,7 @@ const QRCodeModal: React.FC<QRCodeModalProps> = ({
                   size={256}
                   level="H"
                   imageSettings={{
-                    src: event?.orgImgURL as string,
+                    src: orgURL,
                     height: 64,
                     width: 64,
                     excavate: true,

@@ -22,6 +22,7 @@ import Navbar from "@/app/_components/Navbar";
 import QRCodeModal from "@/app/_components/QrCodeModal";
 import { EventNotFound } from "@/app/_components/NotEvent";
 import { EventLoadingState } from "@/app/_components/Loading";
+import { useAuthCheck } from "@/lib/authCheck";
 
 function EventDetailPage() {
   const eventId = useParams().slug as string;
@@ -29,6 +30,8 @@ function EventDetailPage() {
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
   const [showQRCode, setShowQRCode] = useState(false);
+
+  useAuthCheck();
 
   useEffect(() => {
     if (token && eventId) {
@@ -291,6 +294,7 @@ function EventDetailPage() {
         showQRCode={showQRCode}
         shareUrl={shareUrl}
         title={title}
+        orgURL={event.orgImgURL}
       />
     </div>
   );

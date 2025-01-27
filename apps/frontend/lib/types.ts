@@ -74,6 +74,7 @@ interface QRCodeModalProps {
   setShowQRCode: (value: boolean) => void;
   shareUrl: string;
   title: string;
+  orgURL: string;
 }
 
 interface Review {

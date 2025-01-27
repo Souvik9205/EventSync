@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import { toast } from "sonner";
-import { BACKEND_URL } from "@/app/secret";
 import { motion } from "framer-motion";
+import { loginAction } from "@/helper/auth.action";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -25,42 +25,23 @@ const LoginPage: React.FC = () => {
 
   const handleLogin = async (values: { email: string; password: string }) => {
     setIsLoading(true);
-    try {
-      const response = await fetch(`${BACKEND_URL}/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
 
-      const data = await response.json();
-
-      if (response.status === 200) {
-        localStorage.setItem("token", data.token);
-        toast.success("Login Successful", {
-          description: "Redirecting to dashboard...",
-        });
-
-        const redirectUrl = sessionStorage.getItem("redirect");
-        if (redirectUrl) {
-          window.location.href = redirectUrl;
-          sessionStorage.removeItem("redirectUrl");
-        } else {
-          window.location.href = "/home";
-        }
-      } else {
-        toast.error("Login Failed", {
-          description: data.message || "Invalid credentials",
-        });
-      }
-    } catch (error) {
-      toast.error("Network Error", {
-        description: "Unable to connect to server",
-      });
-    } finally {
+    const result = await loginAction(values);
+    if (!result.success) {
+      toast.error("Login Failed", { description: result.message });
       setIsLoading(false);
+      return;
     }
+
+    toast.success(result.message, {
+      description: "Redirecting to dashboard...",
+    });
+    localStorage.setItem("token", result.token);
+
+    const redirectUrl = sessionStorage.getItem("redirect");
+    window.location.href = redirectUrl || "/home";
+    sessionStorage.removeItem("redirect");
+    setIsLoading(false);
   };
 
   const formik = useFormik({
@@ -91,7 +72,7 @@ const LoginPage: React.FC = () => {
               <h1 className="text-3xl mb-1 font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                 Welcome Back
               </h1>
-              <p className="text-gray-500">Sign in to continue to AttendSync</p>
+              <p className="text-gray-500">Sign in to continue to EventSync</p>
             </motion.div>
           </CardHeader>
 

@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { BACKEND_URL } from "@/app/secret";
 import { motion } from "framer-motion";
 import OTPModal from "@/app/_components/OTPForm";
+import { SignUpAction } from "@/helper/auth.action";
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string()
@@ -45,48 +46,16 @@ const SignupPage: React.FC = () => {
   }) => {
     setIsLoading(true);
     setEmail(values.email);
-    try {
-      const response = await fetch(`${BACKEND_URL}/auth/signup`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: values.name,
-          email: values.email,
-          password: values.password,
-        }),
+
+    const result = await SignUpAction(values);
+    if (result.success) {
+      setisOTPModalOpen(true);
+    } else {
+      toast.error("Signup Failed", {
+        description: result.message,
       });
-
-      // const data = await response.json();
-
-      if (response.status === 201) {
-        setisOTPModalOpen(true);
-
-        // localStorage.setItem("token", data.token);
-        // toast.success("Signup Successful", {
-        //   description: "Redirecting to dashboard...",
-        // });
-
-        // const redirectUrl = sessionStorage.getItem("redirect");
-        // if (redirectUrl) {
-        //   window.location.href = redirectUrl;
-        //   sessionStorage.removeItem("redirectUrl");
-        // } else {
-        //   window.location.href = "/home";
-        // }
-      } else {
-        toast.error("Signup Failed", {
-          description: "Unable to create account",
-        });
-      }
-    } catch (error) {
-      toast.error("Network Error", {
-        description: "Unable to connect to server",
-      });
-    } finally {
-      setIsLoading(false);
     }
+    setIsLoading(false);
   };
 
   const formik = useFormik({
@@ -119,7 +88,7 @@ const SignupPage: React.FC = () => {
               <h1 className="text-3xl mb-1 font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                 Create Your Account
               </h1>
-              <p className="text-gray-500">Sign up to start using AttendSync</p>
+              <p className="text-gray-500">Sign up to start using EventSync</p>
             </motion.div>
           </CardHeader>
 

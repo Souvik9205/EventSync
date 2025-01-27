@@ -3,10 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  ArrowLeft,
-  QrCode,
   ClipboardList,
-  AlertCircle,
   Calendar,
   Clock,
   MapPin,
@@ -18,10 +15,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Formik, Form, Field, FieldProps } from "formik";
 import * as Yup from "yup";
-import { BACKEND_URL } from "@/app/secret";
+import { BACKEND_URL, FRONTEND_URL } from "@/app/secret";
 import { EventLoadingState } from "@/app/_components/Loading";
 import { EventNotFound } from "@/app/_components/NotEvent";
 import Navbar from "@/app/_components/Navbar";
+import Link from "next/link";
+import { validateToken } from "@/lib/authCheck";
 
 function EventFormPage() {
   const router = useRouter();
@@ -34,6 +33,13 @@ function EventFormPage() {
 
   useEffect(() => {
     if (!token) {
+      sessionStorage.setItem("redirect", "/attendence/" + eventId);
+      router.push("/auth/login");
+      return;
+    }
+    const isTokenValid = validateToken(token);
+    if (!isTokenValid) {
+      localStorage.removeItem("token");
       sessionStorage.setItem("redirect", "/attendence/" + eventId);
       router.push("/auth/login");
     }
@@ -208,25 +214,33 @@ function EventFormPage() {
         >
           <Card className="bg-white shadow-lg rounded-xl overflow-hidden">
             <CardContent className="p-8">
-              {/* Event Details Section */}
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="mb-8"
               >
-                <div className="flex items-center space-x-4 mb-6">
-                  <img
-                    src={event.orgImgURL}
-                    alt={`${event.organization} logo`}
-                    className="h-16 w-16 rounded-full"
-                  />
-                  <div>
-                    <h1 className="text-2xl font-bold text-gray-900">
-                      {event.name}
-                    </h1>
-                    <p className="text-gray-600">{event.description}</p>
+                <div className="flex flex-col md:flex-row md:items-center space-x-4 mb-6">
+                  <div className="flex-1 items-center space-x-4">
+                    <div className="flex items-center space-x-4">
+                      <img
+                        src={event.orgImgURL}
+                        alt={`${event.organization} logo`}
+                        className="h-16 w-16 rounded-full"
+                      />
+                      <span className="text-2xl font-bold text-gray-900">
+                        {event.name}
+                      </span>
+                    </div>
                   </div>
+                  <p className="text-emerald-800/80 underline pt-6">
+                    <Link
+                      target="_blank"
+                      href={`${FRONTEND_URL}/event/user/${event.id}`}
+                    >
+                      View Event Details
+                    </Link>
+                  </p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 bg-emerald-50 p-4 rounded-lg">

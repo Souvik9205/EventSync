@@ -24,7 +24,7 @@ import { EventLoadingState } from "@/app/_components/Loading";
 import QRCodeModal from "@/app/_components/QrCodeModal";
 import { RattingSimpleCard } from "@/app/_components/ReviewCard";
 import EventUpdateModal from "@/app/_components/EditEventModal";
-import EventLayout from "./EventLayout";
+import { useAuthCheck } from "@/lib/authCheck";
 
 function EventDetailPage() {
   const router = useRouter();
@@ -37,11 +37,7 @@ function EventDetailPage() {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [toggel, setToggel] = useState(false);
 
-  useEffect(() => {
-    if (!token) {
-      router.push("/auth/login");
-    }
-  }, []);
+  useAuthCheck();
   useEffect(() => {
     const getEventDetails = async function (eventId: string) {
       if (token) {
@@ -87,7 +83,7 @@ function EventDetailPage() {
     transition: { duration: 0.6 },
   };
   return (
-    <EventLayout>
+    <>
       <div className="">
         <div className="relative min-h-[60vh] md:min-h-[45vh] lg:h-[60vh]">
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-600 via-teal-500 to-blue-600">
@@ -277,6 +273,7 @@ function EventDetailPage() {
         showQRCode={showQRCode}
         shareUrl={shareUrl}
         title={title}
+        orgURL={event.orgImgURL}
       />
       <EventUpdateModal
         isOpen={isUpdateModalOpen}
@@ -287,7 +284,7 @@ function EventDetailPage() {
         }}
         eventId={eventId}
       />
-    </EventLayout>
+    </>
   );
 }
 

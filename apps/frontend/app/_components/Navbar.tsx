@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { QrCode, UserCircle, Menu, X } from "lucide-react";
@@ -54,7 +55,7 @@ const Navbar: React.FC = () => {
 
   return (
     <motion.header
-      className={`sticky top-0 z-50 transition-all duration-300
+      className={`sticky top-0 z-[99] transition-all duration-300
        bg-white/80 backdrop-blur-md shadow-lg
       }`}
       initial={{ y: -100 }}
@@ -79,7 +80,7 @@ const Navbar: React.FC = () => {
               <QrCode className="h-10 w-10 text-emerald-600 relative" />
             </div>
             <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-teal-600">
-              AttendSync
+              EventSync
             </span>
           </motion.div>
 

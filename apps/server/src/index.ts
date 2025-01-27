@@ -30,7 +30,7 @@ app.use("/api/scan", scanRouter);
 const PORT = 8080;
 
 app.get("/", (req, res) => {
-  res.send("Hello from QrGanize!");
+  res.send("Hello from EventSync!");
 });
 
 app.listen(PORT, () => {

@@ -15,7 +15,7 @@ export function EventLoadingState() {
           repeat: Infinity,
           ease: "easeInOut",
         }}
-        className="text-indigo-600 text-2xl"
+        className="text-emerald-600 text-2xl"
       >
         <QrCode className="h-12 w-12" />
       </motion.div>

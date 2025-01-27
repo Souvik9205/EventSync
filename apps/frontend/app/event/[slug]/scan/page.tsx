@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useRouter, useParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,6 +26,7 @@ import { BACKEND_URL } from "@/app/secret";
 import { toast } from "sonner";
 // import EventLayout from "../EventLayout";
 import { EventLoadingState } from "@/app/_components/Loading";
+import { useAuthCheck } from "@/lib/authCheck";
 
 const QRScanPage = () => {
   const [isCameraOpen, setIsCameraOpen] = useState(false);
@@ -39,6 +40,8 @@ const QRScanPage = () => {
   const [scanValue, setScanValue] = useState(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useAuthCheck();
 
   const handleScan = useCallback(
     async (res: { rawValue: any }[]) => {

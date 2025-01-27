@@ -330,6 +330,7 @@ export const getEventFields = async (eventId: string): Promise<any> => {
         id: eventId,
       },
       select: {
+        id: true,
         name: true,
         description: true,
         organization: true,

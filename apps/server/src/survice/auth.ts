@@ -41,7 +41,7 @@ export const loginService = async (
     }
 
     const token = jwt.sign({ userId: user.id }, JWT_SECRET as string, {
-      expiresIn: "15d",
+      expiresIn: "3d",
     });
     return {
       status: 200,

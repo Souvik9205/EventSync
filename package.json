@@ -7,6 +7,8 @@
     "get_frontend": "cd apps/frontend && npm install",
     "get_backend": "cd apps/server && npm install",
     "setup": "npm i && npm run get_frontend && npm run get_backend && npm run prisma_setup",
+    "backend-deploy": "npm i && npm run get_backend && npm run prisma_setup",
+    "frontend-deploy": "npm i && npm run get_frontend",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""

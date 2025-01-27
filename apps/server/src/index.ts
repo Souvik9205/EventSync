@@ -9,7 +9,7 @@ import OTPVerifyRouter from "./routes/otpVerifyRouter";
 import scanRouter from "./routes/scanRoutes";
 
 const app = express();
-const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
+const FRONTEND_URL = process.env.FRONTEND_URL;
 
 app.use(
   cors({

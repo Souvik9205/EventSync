@@ -54,7 +54,7 @@ export const tokenVerifyController = async (
   }
 
   try {
-    jwt.verify(token, JWT_SECRET); // Verifies token health
+    jwt.verify(token, process.env.JWT_SECRET || JWT_SECRET); // Verifies token health
     res.json({ valid: true });
   } catch (error) {
     console.error("Signup error:", error);

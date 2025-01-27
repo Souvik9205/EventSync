@@ -87,9 +87,13 @@ export const SignupOTPService = async (
         id: existingOtp.id,
       },
     });
-    const token = jwt.sign({ userId: newUser.id }, JWT_SECRET as string, {
-      expiresIn: "3d",
-    });
+    const token = jwt.sign(
+      { userId: newUser.id },
+      process.env.JWT_SECRET || JWT_SECRET,
+      {
+        expiresIn: "3d",
+      }
+    );
 
     return {
       status: 200,

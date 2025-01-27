@@ -9,7 +9,10 @@ import { JWT_SECRET } from "./Secret";
  */
 export function decodeToken(token: string): string {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET || JWT_SECRET
+    ) as jwt.JwtPayload;
 
     if (!decoded || !decoded.userId) {
       throw new Error("Invalid token payload");

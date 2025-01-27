@@ -40,9 +40,13 @@ export const loginService = async (
       };
     }
 
-    const token = jwt.sign({ userId: user.id }, JWT_SECRET as string, {
-      expiresIn: "3d",
-    });
+    const token = jwt.sign(
+      { userId: user.id },
+      process.env.JWT_SECRET || JWT_SECRET,
+      {
+        expiresIn: "3d",
+      }
+    );
     return {
       status: 200,
       data: {

@@ -16,8 +16,8 @@ type EmailType = "UserOtp" | "EventOtp" | "RegisterOtp";
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: process.env.NODEMAILER_USER || "souvikmukhopadhyay4@gmail.com",
-    pass: process.env.NODEMAILER_PASS || "ajpa cbms uvux alco",
+    user: process.env.NODEMAILER_USER,
+    pass: process.env.NODEMAILER_PASS,
   },
 });
 

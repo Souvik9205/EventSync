@@ -10,6 +10,8 @@
     "backend-deploy": "npm i && npm run get_backend && npm run prisma_setup",
     "frontend-deploy": "npm i && npm run get_frontend",
     "dev": "turbo dev",
+    "start_server": "cd apps/server && npm run dev",
+    "start_frontend": "cd apps/frontend && npm run dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },

@@ -92,8 +92,8 @@ function EventDetailPage() {
     toast.success("Link copied to clipboard");
   };
 
-  const shareUrl = `${FRONTEND_URL}/attendence/${eventId}`;
-  const shareEventUrl = `${FRONTEND_URL}/event/user/${eventId}`;
+  const shareUrl = `${process.env.FRONTEND_URL || FRONTEND_URL}/attendence/${eventId}`;
+  const shareEventUrl = `${process.env.FRONTEND_URL || FRONTEND_URL}/event/user/${eventId}`;
   const title = event?.name || "Check out this event!";
 
   if (loading) return <EventLoadingState />;

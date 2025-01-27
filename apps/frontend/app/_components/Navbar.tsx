@@ -94,8 +94,12 @@ const Navbar: React.FC = () => {
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.2 }}
               >
-                <NavLink href={GITHUB_URL}>Contribute</NavLink>
-                <NavLink href={PORTFOLIO_URL}>About Me</NavLink>
+                <NavLink href={process.env.GITHUB_URL || GITHUB_URL}>
+                  Contribute
+                </NavLink>
+                <NavLink href={process.env.PORTFOLIO_URL || PORTFOLIO_URL}>
+                  About Me
+                </NavLink>
 
                 {!hasToken && (
                   <div className="flex items-center space-x-4">

@@ -29,15 +29,15 @@ const Feedback = () => {
         user_name: name,
         user_email: email,
         user_message: message,
-        to_email: "souvik9205@gmail.com",
+        to_email: process.env.MY_EMAIL,
         subject: "EventSync connect",
       };
 
       await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
+        process.env.EMAILJS_SERVICE_ID || EMAILJS_SERVICE_ID,
+        process.env.EMAILJS_TEMPLATE_ID || EMAILJS_TEMPLATE_ID,
         templateParams,
-        EMAILJS_PUBLIC_KEY
+        process.env.EMAILJS_PUBLIC_KEY || EMAILJS_PUBLIC_KEY
       );
 
       toast.success("Thank you for your feedback!", {

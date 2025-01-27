@@ -236,7 +236,7 @@ function EventFormPage() {
                   <p className="text-emerald-800/80 underline pt-6">
                     <Link
                       target="_blank"
-                      href={`${FRONTEND_URL}/event/user/${event.id}`}
+                      href={`${process.env.FRONTEND_URL || FRONTEND_URL}/event/user/${event.id}`}
                     >
                       View Event Details
                     </Link>

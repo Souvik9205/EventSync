@@ -55,8 +55,12 @@ const EventNavbar: React.FC = () => {
           {/* Right Section - Navigation */}
           <div className="flex items-center space-x-6">
             <nav className="hidden md:flex items-center space-x-6">
-              <NavLink href={GITHUB_URL}>Contribute</NavLink>
-              <NavLink href={PORTFOLIO_URL}>About Me</NavLink>
+              <NavLink href={process.env.GITHUB_URL || GITHUB_URL}>
+                Contribute
+              </NavLink>
+              <NavLink href={process.env.PORTFOLIO_URL || PORTFOLIO_URL}>
+                About Me
+              </NavLink>
             </nav>
             <motion.div
               whileHover={{ scale: 1.05 }}

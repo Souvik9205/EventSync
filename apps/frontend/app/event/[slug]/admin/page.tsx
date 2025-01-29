@@ -29,10 +29,14 @@ const EventAdminPage = () => {
   const fetchEventData = async () => {
     try {
       const response = await fetch(`${BACKEND_URL}/event/adminlist`, {
+        method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          eventId,
+        }),
       });
       const data = await response.json();
       setEventData(data);

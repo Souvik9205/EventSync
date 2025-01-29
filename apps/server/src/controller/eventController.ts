@@ -263,7 +263,7 @@ export const getOwnershipListController = async (
     res.status(401).json({ message: "Unauthorized" });
     return;
   }
-  const { eventId } = req.params;
+  const { eventId } = req.body;
   if (!eventId || eventId === "") {
     res.status(400).json({ message: "Event ID is required" });
     return;

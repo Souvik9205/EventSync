@@ -1,5 +1,5 @@
-// export const BACKEND_URL = "https://eventsync-backend-ydhu.onrender.com/api";
-export const BACKEND_URL = "http://localhost:8000/api";
+export const BACKEND_URL = "https://eventsync-backend-ydhu.onrender.com/api";
+// export const BACKEND_URL = "http://localhost:8000/api";
 export const FRONTEND_URL = "http://localhost:3000";
 
 export const GITHUB_URL = "https://github.com/Souvik9205/EventSync.git";

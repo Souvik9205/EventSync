@@ -237,8 +237,8 @@ export const giveOwnershipController = async (
     res.status(401).json({ message: "Unauthorized" });
     return;
   }
-  const { userId, eventId } = req.body;
-  if (!userId || !eventId) {
+  const { userEmail, eventId } = req.body;
+  if (!userEmail || !eventId) {
     res.status(400).json({
       message: "All required fields must be provided.",
     });
@@ -246,7 +246,7 @@ export const giveOwnershipController = async (
   }
 
   try {
-    const result = await giveOwnership(token, userId, eventId);
+    const result = await giveOwnership(token, userEmail, eventId);
     res.status(result.status).json(result.data);
   } catch (error) {
     console.error("Create event error:", error);

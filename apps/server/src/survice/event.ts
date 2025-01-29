@@ -577,7 +577,7 @@ export const updateEvent = async (
 
 export const giveOwnership = async (
   token: string,
-  userId: string,
+  userEmail: string,
   eventId: string
 ): Promise<{
   status: number;
@@ -641,7 +641,10 @@ export const giveOwnership = async (
     }
 
     const targetUser = await prisma.user.findUnique({
-      where: { id: userId },
+      where: { email: userEmail },
+      select: {
+        id: true,
+      },
     });
 
     if (!targetUser) {
@@ -654,15 +657,24 @@ export const giveOwnership = async (
     }
 
     const isAlreadyAdmin = existingEvent.admins.some(
-      (admin) => admin.id === userId
+      (admin) => admin.id === targetUser.id
     );
+
+    if (isAlreadyAdmin || existingEvent.createdById === targetUser.id) {
+      return {
+        status: 400,
+        data: {
+          message: "User is already an admin or event creator",
+        },
+      };
+    }
 
     if (!isAlreadyAdmin) {
       await prisma.event.update({
         where: { id: eventId },
         data: {
           admins: {
-            connect: { id: userId },
+            connect: { id: targetUser.id },
           },
         },
       });

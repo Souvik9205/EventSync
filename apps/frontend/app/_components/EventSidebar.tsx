@@ -32,11 +32,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onOpenChange }) => {
       icon: QrCode,
       path: `/event/${slug}/scan`,
     },
-    {
-      title: "Test",
-      icon: TestTube,
-      path: `/event/${slug}/test`,
-    },
+    // {
+    //   title: "Test",
+    //   icon: TestTube,
+    //   path: `/event/${slug}/test`,
+    // },
     {
       title: "Admins",
       icon: UserCog,

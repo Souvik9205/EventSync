@@ -370,14 +370,9 @@ const UserProfilePage = () => {
                 <p className="text-2xl text-gray-500 mb-4">
                   No events registered yet
                 </p>
-                <p className="text-gray-400 mb-6">
-                  Browse events to find interesting ones to join!
-                </p>
-                <Button
-                  onClick={() => router.push("/events")}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white"
-                >
-                  <Calendar className="mr-2 h-5 w-5" /> Browse Events
+
+                <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+                  <Calendar className="mr-2 h-5 w-5" /> No Events
                 </Button>
               </div>
             ) : (

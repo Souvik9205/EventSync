@@ -1,12 +1,6 @@
 "use client";
 import { useState, useRef } from "react";
-import {
-  Paperclip,
-  Send,
-  Upload,
-  Bandage,
-  UploadCloudIcon,
-} from "lucide-react";
+import { Paperclip, Send, Bandage, UploadCloudIcon } from "lucide-react";
 
 interface Attachment {
   file: File;

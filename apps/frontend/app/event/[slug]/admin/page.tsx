@@ -5,13 +5,7 @@ import { useParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -99,6 +93,7 @@ const EventAdminPage = () => {
           setServerError(data.message || "Failed to add admin");
         }
       } catch (error) {
+        console.error("Error adding admin:", error);
         setServerError("An unexpected error occurred. Please try again.");
       } finally {
         setAddingUser(false);
@@ -123,6 +118,7 @@ const EventAdminPage = () => {
       const data = await response.json();
       setEventData(data.event);
     } catch (error) {
+      console.error("Error fetching event data:", error);
       setServerError("Failed to load event data");
     } finally {
       setLoading(false);

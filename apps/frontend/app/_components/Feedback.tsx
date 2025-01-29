@@ -49,7 +49,7 @@ const Feedback = () => {
       setName("");
     } catch (error) {
       toast.error("Failed to send feedback", {
-        description: "Please try again later or contact us directly.",
+        description: `Please try again later or contact us directly.${error}`,
       });
     } finally {
       setIsLoading(false);
@@ -66,10 +66,10 @@ const Feedback = () => {
     >
       <div className="grid md:grid-cols-2 gap-8 bg-white rounded-2xl overflow-hidden shadow-xl">
         <div className="bg-gradient-to-br from-emerald-600 to-teal-500 p-8 md:p-12 text-white">
-          <h2 className="text-3xl font-bold mb-6">Let's Connect</h2>
+          <h2 className="text-3xl font-bold mb-6">Let&apos;s Connect</h2>
           <p className="text-emerald-50 mb-8">
-            We're excited to hear from you! Share your thoughts, questions, or
-            suggestions.
+            We&apos;re excited to hear from you! Share your thoughts, questions,
+            or suggestions.
           </p>
 
           <div className="space-y-6">
@@ -80,7 +80,7 @@ const Feedback = () => {
               <div>
                 <h3 className="font-semibold">Email Us</h3>
                 <p className="text-sm text-emerald-50">
-                  We'll respond within 24 hours
+                  We&apos;ll respond within 24 hours
                 </p>
               </div>
             </div>

@@ -18,8 +18,6 @@ interface Attendee {
   fields: AttendeeFields;
 }
 
-type CameraDevice = MediaDeviceInfo;
-
 interface Review {
   id: string;
   eventId: string;
@@ -120,5 +118,5 @@ interface EventFormData {
 interface EventCreationModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onEventCreated?: (event: any) => void;
+  onEventCreated?: (event: Event) => void;
 }

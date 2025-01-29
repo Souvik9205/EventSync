@@ -96,6 +96,7 @@ const OTPModal: React.FC<OTPModalProps> = ({ isOpen, onClose, userData }) => {
       }
     } catch (error) {
       toast.error("Failed to resend OTP. Please try again.");
+      console.error(error);
     } finally {
       setIsResending(false);
     }
@@ -137,8 +138,8 @@ const OTPModal: React.FC<OTPModalProps> = ({ isOpen, onClose, userData }) => {
             Enter OTP
           </h1>
           <p className="text-gray-600 mt-1 text-sm">
-            We've sent a 6-digit OTP to your email. Please enter it below to
-            verify your account.
+            We&apos;ve sent a 6-digit OTP to your email. Please enter it below
+            to verify your account.
           </p>
         </motion.div>
         <form
@@ -203,7 +204,7 @@ const OTPModal: React.FC<OTPModalProps> = ({ isOpen, onClose, userData }) => {
                 {isResending ? "Sending..." : "Resend OTP"}
               </Button>
               <span className="text-gray-500 text-sm">
-                Didn't receive code?
+                Didn&apos;t receive code?
               </span>
             </div>
           </div>

@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
   BarChart3,
-  Calculator,
   Calendar,
   ChartBar,
   Clock,
@@ -14,7 +13,6 @@ import {
   QrCode,
   Send,
 } from "lucide-react";
-import { EmailIcon } from "react-share";
 
 const LandingTab = () => {
   const [activeTab, setActiveTab] = useState("events Management");

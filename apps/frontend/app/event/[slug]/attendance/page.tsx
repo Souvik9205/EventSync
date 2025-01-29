@@ -1,9 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import {
-  BarChart2,
   CalendarDays,
   Clock,
   Download,
@@ -87,7 +86,7 @@ function AttendanceDetails() {
 
     // Create worksheet data
     const worksheetData = event.attendees.map((attendee) => {
-      const row: Record<string, any> = {
+      const row: Record<string, string | number | boolean | Date | null> = {
         Timestamp: new Date(attendee.timestamp).toLocaleString(),
       };
 
@@ -247,7 +246,7 @@ function AttendanceDetails() {
         <Card className="bg-white hover:shadow-lg transition-shadow duration-500 transform hover:-translate-y-1">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-gray-500">
-              Today's Attendance
+              Today&apos;s Attendance
             </CardTitle>
             <CalendarDays className="h-4 w-4 text-teal-600" />
           </CardHeader>

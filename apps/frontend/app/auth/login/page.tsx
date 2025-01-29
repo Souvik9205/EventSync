@@ -8,7 +8,6 @@ import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { loginAction } from "@/helper/auth.action";
 import { BACKEND_URL } from "@/app/secret";
 
 const LoginSchema = Yup.object().shape({
@@ -186,7 +185,7 @@ const LoginPage: React.FC = () => {
 
                 <div className="text-center">
                   <p className="text-sm text-gray-600 mt-4">
-                    Don't have an account?{" "}
+                    Don&apos;t have an account?{" "}
                     <Link
                       href="/auth/signup"
                       className="text-emerald-600 hover:text-emerald-800 font-medium transition-colors"

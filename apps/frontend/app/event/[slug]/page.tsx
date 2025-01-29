@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   Calendar,
@@ -13,7 +13,6 @@ import {
   Ticket,
   IndianRupee,
   Info,
-  Menu,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BACKEND_URL, FRONTEND_URL } from "@/app/secret";
@@ -27,13 +26,11 @@ import EventUpdateModal from "@/app/_components/EditEventModal";
 import { useAuthCheck } from "@/lib/authCheck";
 
 function EventDetailPage() {
-  const router = useRouter();
   const eventId = useParams().slug as string;
   const token = localStorage.getItem("token");
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
   const [showQRCode, setShowQRCode] = useState(false);
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [toggel, setToggel] = useState(false);
 

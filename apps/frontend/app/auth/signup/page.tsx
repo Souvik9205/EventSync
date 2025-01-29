@@ -10,7 +10,6 @@ import { toast } from "sonner";
 import { BACKEND_URL } from "@/app/secret";
 import { motion } from "framer-motion";
 import OTPModal from "@/app/_components/OTPForm";
-import { SignUpAction } from "@/helper/auth.action";
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string()
@@ -36,7 +35,6 @@ const SignupPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [email, setEmail] = useState("");
   const [isOTPModalOpen, setisOTPModalOpen] = useState(false);
 
   const handleSignup = async (values: {
@@ -45,7 +43,6 @@ const SignupPage: React.FC = () => {
     password: string;
   }) => {
     setIsLoading(true);
-    setEmail(values.email);
 
     // const result = await SignUpAction(values);
     const response = await fetch(

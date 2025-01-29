@@ -28,6 +28,8 @@ import { toast } from "sonner";
 import { EventLoadingState } from "@/app/_components/Loading";
 import { useAuthCheck } from "@/lib/authCheck";
 
+type CameraDevice = MediaDeviceInfo;
+
 const QRScanPage = () => {
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [cameras, setCameras] = useState<CameraDevice[]>([]);
@@ -37,15 +39,15 @@ const QRScanPage = () => {
     user: string;
     email: string;
   } | null>(null);
-  const [scanValue, setScanValue] = useState(null);
+  const [scanValue, setScanValue] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   useAuthCheck();
 
   const handleScan = useCallback(
-    async (res: { rawValue: any }[]) => {
-      if (!res || !res[0] || !res[0].rawValue) {
+    async (res: { rawValue: string }[]) => {
+      if (!res || res.length === 0 || !res[0].rawValue) {
         setErrorMessage("No valid QR code detected");
         return;
       }
@@ -75,6 +77,7 @@ const QRScanPage = () => {
           setErrorMessage(data.message || "Invalid QR code");
         }
       } catch (error) {
+        console.error("Error scanning QR code:", error);
         setErrorMessage("Network error. Retry scanning");
       } finally {
         setLoading(false);

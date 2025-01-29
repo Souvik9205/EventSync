@@ -5,11 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
 
-const ReviewCard: React.FC<ReviewCardProps> = ({
-  reviews,
-  eventId,
-  onReviewSubmit,
-}) => {
+const ReviewCard: React.FC<ReviewCardProps> = ({ reviews, onReviewSubmit }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [rating, setRating] = useState<number | null>(null);
   const [hoverRating, setHoverRating] = useState<number | null>(null);
@@ -31,6 +27,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
       setRating(null);
       setIsExpanded(false);
     } catch (error) {
+      console.error("Error submitting review:", error);
       toast.error("Failed to submit review. Please try again.");
     } finally {
       setIsSubmitting(false);

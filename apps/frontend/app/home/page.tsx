@@ -361,7 +361,9 @@ const UserProfilePage = () => {
                 <h2 className="text-3xl font-bold text-emerald-900">
                   Registered Events
                 </h2>
-                <p className="text-gray-600">Events you're participating in</p>
+                <p className="text-gray-600">
+                  Events you&apos;re participating in
+                </p>
               </div>
             </div>
 

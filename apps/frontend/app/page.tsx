@@ -92,7 +92,7 @@ const EventLandingPage = () => {
                       onClick={() => (window.location.href = "/home")}
                       className="transition duration-300 hover:scale-105 bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg group"
                     >
-                      Let's Explore
+                      Let&apos;s Explore
                       <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                     </Button>
                     {/* <Button

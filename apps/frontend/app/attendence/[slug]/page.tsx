@@ -66,6 +66,7 @@ function EventFormPage() {
         setEvent(data.event);
         setLoading(false);
       } catch (error) {
+        console.error(error);
         setError("Failed to load event details");
         setLoading(false);
       }
@@ -75,7 +76,7 @@ function EventFormPage() {
   }, [eventId]);
 
   const generateValidationSchema = (fields: CustomField[]) => {
-    const schemaFields: { [key: string]: any } = {};
+    const schemaFields: { [key: string]: Yup.AnySchema } = {};
 
     fields.forEach((field) => {
       switch (field.fieldType) {
@@ -114,7 +115,13 @@ function EventFormPage() {
 
   const handleSubmit = async (
     values: { [key: string]: string },
-    { setSubmitting, setStatus }: any
+    {
+      setSubmitting,
+      setStatus,
+    }: {
+      setSubmitting: (isSubmitting: boolean) => void;
+      setStatus: (status: { message: string }) => void;
+    }
   ) => {
     if (!token) {
       setStatus({
@@ -151,6 +158,7 @@ function EventFormPage() {
         setStatus({ message: `${res.message}` });
       }
     } catch (e) {
+      console.error(e);
       setStatus({ message: "An error occurred. Please try again later" });
     }
     setSubmitting(false);

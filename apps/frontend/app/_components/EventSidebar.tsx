@@ -1,14 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { useParams, useRouter, usePathname } from "next/navigation";
-import {
-  Menu,
-  X,
-  LayoutDashboard,
-  Users,
-  QrCode,
-  TestTube,
-  UserCog,
-} from "lucide-react";
+import { Menu, X, LayoutDashboard, Users, QrCode, UserCog } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onOpenChange }) => {

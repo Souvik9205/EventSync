@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import { useParams, useRouter, usePathname } from "next/navigation";
-import { Menu, X, LayoutDashboard, Users, QrCode } from "lucide-react";
+import {
+  Menu,
+  X,
+  LayoutDashboard,
+  Users,
+  QrCode,
+  TestTube,
+  UserCog,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onOpenChange }) => {
@@ -23,6 +31,16 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onOpenChange }) => {
       title: "Scan",
       icon: QrCode,
       path: `/event/${slug}/scan`,
+    },
+    {
+      title: "Test",
+      icon: TestTube,
+      path: `/event/${slug}/test`,
+    },
+    {
+      title: "Admins",
+      icon: UserCog,
+      path: `/event/${slug}/admin`,
     },
   ];
 

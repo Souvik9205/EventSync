@@ -155,3 +155,53 @@ export const signUpService = async (
     };
   }
 };
+
+// export const forgetPasswordService = async (email: string): Promise<any> => {
+//   try {
+//     const user = await prisma.user.findUnique({ where: { email } });
+//     if (!user) {
+//       // return NextResponse.json(
+//       //   { message: "If the email exists, a reset link will be sent" },
+//       //   { status: 200 }
+//       // );
+//       return {
+//         status: 200,
+//         message: "If the email exists, a reset link will be sent",
+//       };
+//     }
+
+//     const token = uuidv4();
+//     const expiresAt = new Date(Date.now() + 3600000); // 1 hour
+
+//     await prisma.passwordResetToken.create({
+//       data: {
+//         userId: user.id,
+//         token,
+//         expiresAt,
+//       },
+//     });
+
+//     const resetLink = `${process.env.FRONTEND_URL}/auth/reset-password?token=${token}`;
+//     await EmailSent({
+//       email,
+//       subject: "Password Reset Request",
+//       html: `Click <a href="${resetLink}">here</a> to reset your password. This link expires in 1 hour.`,
+//     });
+
+//     return NextResponse.json(
+//       { message: "Password reset link sent to email" },
+//       { status: 200 }
+//     );
+//   } catch (error) {
+//     return {
+//       status: 500,
+//       data: {
+//         message: `Internal server error, ${error}`,
+//         token: "",
+//       },
+//     };
+//   }
+// };
+// function uuidv4() {
+//   throw new Error("Function not implemented.");
+// }

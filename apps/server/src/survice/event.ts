@@ -683,3 +683,83 @@ export const giveOwnership = async (
     };
   }
 };
+
+export const getOwnershipList = async (
+  token: string,
+  eventId: string
+): Promise<any> => {
+  try {
+    const id = decodeToken(token);
+    const user = await prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!user) {
+      return {
+        status: 404,
+        data: {
+          message: "User not found",
+        },
+      };
+    }
+    const event = await prisma.event.findUnique({
+      where: {
+        id: eventId,
+      },
+      select: {
+        name: true,
+        organization: true,
+        orgImgURL: true,
+        createdBy: {
+          select: {
+            id: true,
+            email: true,
+            name: true,
+            imgURL: true,
+            createdAt: true,
+          },
+        },
+        admins: {
+          select: {
+            id: true,
+            email: true,
+            name: true,
+            imgURL: true,
+            createdAt: true,
+          },
+        },
+      },
+    });
+    if (!event) {
+      return {
+        status: 404,
+        data: {
+          message: "Event not found",
+        },
+      };
+    }
+    const isAdmin = event.admins.some((admin) => admin.id === id);
+    if (event.createdBy.id !== id && !isAdmin) {
+      return {
+        status: 403,
+        data: {
+          message: "You are not authorized to view admin data",
+        },
+      };
+    }
+    return {
+      status: 200,
+      data: {
+        event,
+      },
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      data: {
+        message: "Internal server error",
+      },
+    };
+  }
+};

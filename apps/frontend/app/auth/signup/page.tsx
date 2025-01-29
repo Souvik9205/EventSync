@@ -47,8 +47,19 @@ const SignupPage: React.FC = () => {
     setIsLoading(true);
     setEmail(values.email);
 
-    const result = await SignUpAction(values);
-    if (result.success) {
+    // const result = await SignUpAction(values);
+    const response = await fetch(
+      `${process.env.BACKEND_URL || BACKEND_URL}/auth/signup`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      }
+    );
+    const result = await response.json();
+    if (response.ok) {
       setisOTPModalOpen(true);
     } else {
       toast.error("Signup Failed", {
@@ -295,7 +306,11 @@ const SignupPage: React.FC = () => {
       </motion.div>
 
       <OTPModal
-        email={email}
+        userData={{
+          name: formik.values.name,
+          email: formik.values.email,
+          password: formik.values.password,
+        }}
         isOpen={isOTPModalOpen}
         onClose={() => setisOTPModalOpen(false)}
       />

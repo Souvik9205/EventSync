@@ -7,13 +7,16 @@ export const loginAction = async (values: {
   password: string;
 }) => {
   try {
-    const response = await fetch(`${BACKEND_URL}/auth/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    });
+    const response = await fetch(
+      `${process.env.BACKEND_URL || BACKEND_URL}/auth/login`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      }
+    );
 
     const data = await response.json();
 
@@ -40,13 +43,16 @@ export const SignUpAction = async (values: {
   name: string;
 }) => {
   try {
-    const response = await fetch(`${BACKEND_URL}/auth/signup`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    });
+    const response = await fetch(
+      `${process.env.BACKEND_URL || BACKEND_URL}/auth/signup`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      }
+    );
 
     const data = await response.json();
 

@@ -15,13 +15,18 @@ import { motion } from "framer-motion";
 interface OTPModalProps {
   isOpen: boolean;
   onClose: () => void;
-  email: string;
+  userData: {
+    name: string;
+    email: string;
+    password: string;
+  };
 }
 
-const OTPModal: React.FC<OTPModalProps> = ({ isOpen, onClose, email }) => {
+const OTPModal: React.FC<OTPModalProps> = ({ isOpen, onClose, userData }) => {
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
+  const [isResending, setIsResending] = useState(false);
 
   const otpForm = useFormik({
     initialValues: {
@@ -42,7 +47,7 @@ const OTPModal: React.FC<OTPModalProps> = ({ isOpen, onClose, email }) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            email,
+            email: userData.email,
             otp: value.otp,
           }),
         });
@@ -72,6 +77,29 @@ const OTPModal: React.FC<OTPModalProps> = ({ isOpen, onClose, email }) => {
       }
     },
   });
+  const handleResendOTP = async () => {
+    setIsResending(true);
+    try {
+      const response = await fetch(`${BACKEND_URL}/auth/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        toast.success("New OTP has been sent to your email");
+      } else {
+        toast.error(result.message || "Resend Failed");
+      }
+    } catch (error) {
+      toast.error("Failed to resend OTP. Please try again.");
+    } finally {
+      setIsResending(false);
+    }
+  };
 
   const handleOutsideClick = (event: MouseEvent) => {
     if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
@@ -161,6 +189,25 @@ const OTPModal: React.FC<OTPModalProps> = ({ isOpen, onClose, email }) => {
             </Button>
           </div>
         </form>
+
+        <div className="flex flex-col w-full gap-3 mt-4">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={handleResendOTP}
+                disabled={isResending || loading}
+                className="text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700"
+              >
+                {isResending ? "Sending..." : "Resend OTP"}
+              </Button>
+              <span className="text-gray-500 text-sm">
+                Didn't receive code?
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import {
   getUserEventController,
   updateEventController,
   giveOwnershipController,
+  getOwnershipListController,
 } from "../controller/eventController";
 
 const eventRouter = Router();
@@ -20,5 +21,6 @@ eventRouter.get("/fields/:eventId", getEventFieldsController);
 eventRouter.get("/attendence/:eventId", getEventAttendenceController);
 eventRouter.post("/update", updateEventController);
 eventRouter.post("/ownership", giveOwnershipController);
+eventRouter.post("/adminlist", getOwnershipListController);
 
 export default eventRouter;

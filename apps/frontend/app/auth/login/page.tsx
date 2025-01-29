@@ -9,6 +9,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { loginAction } from "@/helper/auth.action";
+import { BACKEND_URL } from "@/app/secret";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -26,8 +27,18 @@ const LoginPage: React.FC = () => {
   const handleLogin = async (values: { email: string; password: string }) => {
     setIsLoading(true);
 
-    const result = await loginAction(values);
-    if (!result.success) {
+    // const result = await loginAction(values);
+    const response = await fetch(`${BACKEND_URL}/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
       toast.error("Login Failed", { description: result.message });
       setIsLoading(false);
       return;

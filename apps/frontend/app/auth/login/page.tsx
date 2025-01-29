@@ -26,32 +26,36 @@ const LoginPage: React.FC = () => {
   const handleLogin = async (values: { email: string; password: string }) => {
     setIsLoading(true);
 
-    // const result = await loginAction(values);
-    const response = await fetch(`${BACKEND_URL}/auth/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    });
+    try {
+      // const result = await loginAction(values);
+      const response = await fetch(`${BACKEND_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
 
-    const result = await response.json();
+      const result = await response.json();
 
-    if (!response.ok) {
-      toast.error("Login Failed", { description: result.message });
+      if (!response.ok) {
+        toast.error("Login Failed", { description: result.message });
+        setIsLoading(false);
+        return;
+      }
+
+      toast.success(result.message, {
+        description: "Redirecting to dashboard...",
+      });
+      if (typeof window !== "undefined") {
+        localStorage.setItem("token", result.token);
+        const redirectUrl = sessionStorage.getItem("redirect");
+        window.location.href = redirectUrl || "/home";
+        sessionStorage.removeItem("redirect");
+      }
+    } finally {
       setIsLoading(false);
-      return;
     }
-
-    toast.success(result.message, {
-      description: "Redirecting to dashboard...",
-    });
-    localStorage.setItem("token", result.token);
-
-    const redirectUrl = sessionStorage.getItem("redirect");
-    window.location.href = redirectUrl || "/home";
-    sessionStorage.removeItem("redirect");
-    setIsLoading(false);
   };
 
   const formik = useFormik({

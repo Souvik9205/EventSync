@@ -5,13 +5,13 @@ import { Button } from "@/components/ui/button";
 import {
   BarChart3,
   Calendar,
-  ChartBar,
   Clock,
   DollarSign,
   FileSpreadsheet,
   Presentation,
   QrCode,
   Send,
+  UserCog2Icon,
 } from "lucide-react";
 
 const LandingTab = () => {
@@ -25,24 +25,22 @@ const LandingTab = () => {
           viewport={{ once: true }}
           className="flex justify-center flex-wrap gap-4 mb-16"
         >
-          {[
-            "events Management",
-            "Tools & Analytics",
-            "Financial Management",
-          ].map((tab) => (
-            <Button
-              key={tab}
-              variant={activeTab === tab ? "default" : "outline"}
-              onClick={() => setActiveTab(tab)}
-              className={`${
-                activeTab === tab
-                  ? "bg-emerald-600 text-white"
-                  : "border-emerald-200 text-gray-600"
-              }`}
-            >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
-            </Button>
-          ))}
+          {["events Management", "Tools & Analytics", "Event Management"].map(
+            (tab) => (
+              <Button
+                key={tab}
+                variant={activeTab === tab ? "default" : "outline"}
+                onClick={() => setActiveTab(tab)}
+                className={`${
+                  activeTab === tab
+                    ? "bg-emerald-600 text-white"
+                    : "border-emerald-200 text-gray-600"
+                }`}
+              >
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </Button>
+            )
+          )}
         </motion.div>
 
         <motion.div
@@ -123,7 +121,7 @@ const LandingTab = () => {
               </motion.div>
             ))}
 
-          {activeTab === "Financial Management" &&
+          {activeTab === "Event Management" &&
             [
               {
                 icon: Send,
@@ -138,9 +136,9 @@ const LandingTab = () => {
                   "Secure payment gateway for ticket sales (Coming Soon)",
               },
               {
-                icon: ChartBar,
-                title: "Financial Reports",
-                description: "Detailed financial analytics and projections",
+                icon: UserCog2Icon,
+                title: "Multiple Admins",
+                description: "Add Admins to manage events and attendees",
               },
             ].map((feature, index) => (
               <motion.div

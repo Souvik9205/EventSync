@@ -1,84 +1,87 @@
-# Turborepo starter
+# Event Sync
 
-This is an official starter Turborepo.
+**Event Sync** is a powerful event management platform that enables users to create and manage events seamlessly. It offers real-time attendance tracking, event registration forms, QR-based ticket validation, and automated email confirmations. The platform is designed to enhance event organization with advanced tools like Google Calendar integration, data analytics, and attendance exports.
 
-## Using this example
+---
 
-Run the following command:
+## 🚀 Features
 
-```sh
-npx create-turbo@latest
-```
+### 🎟️ Event Creation & Registration
 
-## What's inside?
+- Create multiple events with detailed information.
+- Generate and share event-specific QR codes for easy access.
+- Custom registration forms for attendees.
 
-This Turborepo includes the following packages/apps:
+### 🔐 Authentication & Security
 
-### Apps and Packages
+- Email OTP verification for secure user sign-up.
+- Strong authentication and authorization mechanisms.
+- Automatic confirmation emails upon successful registration, with ticket QR code attachment.
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+### 📊 Attendance & Data Management
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+- Real-time attendance tracking with analytics.
+- Export attendance data in Excel format with a single click.
+- QR code scanning system for quick check-ins and auto-verification.
 
-### Utilities
+### 📅 Integrations & Admin Controls
 
-This Turborepo has some additional tools already setup for you:
+- Google Calendar setup for event scheduling.
+- Multi-admin event management with shared access controls.
+- Seamless event coordination among multiple admins.
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+---
 
-### Build
+## 📸 Screenshots
 
-To build all apps and packages, run the following command:
+(Include relevant screenshots showcasing the UI and key features)
 
-```
-cd my-turborepo
-pnpm build
-```
+---
 
-### Develop
+## 📈 Upcoming Features
 
-To develop all apps and packages, run the following command:
+- 📽️ Upload and present PowerPoint slides within the platform.
+- 📩 Custom mass email functionality for event attendees.
+- 💳 Integrated payment gateway for paid events.
 
-```
-cd my-turborepo
-pnpm dev
-```
+---
 
-### Remote Caching
+## 💻 Contribution Guide
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+### Local Setup
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/your-repo/event-sync.git
+   ```
+2. Navigate to the server directory:
+   ```sh
+   cd apps/server
+   ```
+3. Create a `.env` file and add the required environment variables:
+   ```sh
+   DATABASE_URL=<your_database_url>
+   ```
+4. Go back to the root directory and set up dependencies:
+   ```sh
+   npm run setup
+   ```
+5. Start the development server:
+   ```sh
+   npm run dev
+   ```
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+### Docker Setup
 
-```
-cd my-turborepo
-npx turbo login
-```
+1. Run the application using Docker:
+   ```sh
+   docker compose up
+   ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+---
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+## 📢 Additional Information
 
-```
-npx turbo link
-```
+For any queries, feature requests, or contributions, feel free to open an issue or submit a pull request. Stay tuned for upcoming updates!
 
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+Happy coding! 🎉

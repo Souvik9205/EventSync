@@ -1,0 +1,10 @@
+BACKEND_URL = https://eventsync-backend-ydhu.onrender.com/api
+FRONTEND_URL = https://event-syncs.vercel.app
+
+GITHUB_URL = https://github.com/Souvik9205/EventSync.git
+PORTFOLIO_URL = https://itzsouvik.com/
+
+EMAILJS_SERVICE_ID = 
+EMAILJS_TEMPLATE_ID = 
+EMAILJS_PUBLIC_KEY = 
+MY_EMAIL = 

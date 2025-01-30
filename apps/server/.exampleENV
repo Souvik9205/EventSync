@@ -1,0 +1,8 @@
+DATABASE_URL = ""
+FRONTEND_URL = "https://event-syncs.vercel.app"
+
+JWT_SECRET = "";
+JWT_ACCESS_TOKEN = "";
+
+NODEMAILER_USER = ""
+NODEMAILER_PASS = ""

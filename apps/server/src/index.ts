@@ -14,10 +14,8 @@ const FRONTEND_URL = process.env.FRONTEND_URL;
 
 app.use(
   cors({
-    origin:
-      FRONTEND_URL &&
-      "http://localhost:3000" &&
-      "https://event-sync-frontend-rho.vercel.app/",
+    origin: "*",
+
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })

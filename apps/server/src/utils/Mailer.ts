@@ -230,6 +230,18 @@ export const EmailSent = async (
         ? `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(data.eventName)}&dates=${encodeURIComponent(new Date(data.eventDate).toISOString().replace(/[-:]|\.\d{3}/g, ""))}&details=Event details&location=${encodeURIComponent(data.eventVenue || "")}`
         : "#";
 
+    const eventDateFormatted = new Date(data.eventDate);
+    const formattedDate = new Intl.DateTimeFormat("en-IN", {
+      weekday: "short",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+      timeZoneName: "short",
+    }).format(eventDateFormatted);
+
     return `
       <html>
       <head>
@@ -251,7 +263,7 @@ export const EmailSent = async (
                   
                   <div class="event-details">
                     <p><strong>📅 Event:</strong> ${data.eventName || "N/A"}</p>
-                    <p><strong>🕒 Date:</strong> ${data.eventDate || "N/A"}</p>
+                    <p><strong>🕒 Date:</strong> ${formattedDate || "N/A"}</p>
                     <p><strong>📍 Venue:</strong> ${data.eventVenue || "N/A"}</p>
                   </div>
   

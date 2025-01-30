@@ -52,7 +52,7 @@ model CustomField {
   id        String    @id @default(cuid())
   eventId   String
   fieldName String
-  fieldType String  
+  fieldType String    @default("text")
   Event     Event  @relation(fields: [eventId], references: [id])
 }
 

@@ -230,7 +230,7 @@ const QRScanPage = () => {
               Confirm Attendee
             </DialogTitle>
           </DialogHeader>
-          <DialogDescription className="space-y-4">
+          <DialogDescription asChild className="space-y-4">
             <div className="bg-white border-2 border-emerald-200 p-4 rounded-lg">
               <div className="text-lg text-emerald-900">
                 <strong>Name:</strong> {scanResult?.user}

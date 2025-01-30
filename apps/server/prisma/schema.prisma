@@ -20,7 +20,7 @@ model User {
   name      String?
   imgURL    String? 
 
-  resetToken PasswordResetToken[]
+  // resetToken PasswordResetToken[]
   eventsOwned Event[]  @relation("EventOwnership")
   events    Event[]  @relation("UserEvents")
   createdAt DateTime @default(now())
@@ -86,15 +86,15 @@ model Otp {
   expiresAt DateTime
 }
 
-model PasswordResetToken {
-id        String   @id @default(cuid())
-userId    String
-user      User     @relation(fields: [userId], references: [id])
-token     String   @unique
+// model PasswordResetToken {
+// id        String   @id @default(cuid())
+// userId    String
+// user      User     @relation(fields: [userId], references: [id])
+// token     String   @unique
 
-expiresAt DateTime
-createdAt DateTime @default(now())
-}
+// expiresAt DateTime
+// createdAt DateTime @default(now())
+// }
 
 enum OTP_Type {
   UserOtp

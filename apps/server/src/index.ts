@@ -7,13 +7,17 @@ import eventRouter from "./routes/eventRouter";
 import registerRouter from "./routes/attendenceRouter";
 import OTPVerifyRouter from "./routes/otpVerifyRouter";
 import scanRouter from "./routes/scanRoutes";
+import cleanUpRouter from "./routes/cleanUpRouter";
 
 const app = express();
 const FRONTEND_URL = process.env.FRONTEND_URL;
 
 app.use(
   cors({
-    origin: FRONTEND_URL,
+    origin:
+      FRONTEND_URL ||
+      "http://localhost:3000" ||
+      "https://event-sync-frontend-rho.vercel.app/",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -32,6 +36,7 @@ const PORT = 8080;
 app.get("/", (req, res) => {
   res.send("Hello from EventSync!");
 });
+app.use("/api/cleanup", cleanUpRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);

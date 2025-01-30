@@ -2,6 +2,7 @@ import React from "react";
 import { useParams, useRouter, usePathname } from "next/navigation";
 import { Menu, X, LayoutDashboard, Users, QrCode, UserCog } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onOpenChange }) => {
   const router = useRouter();
@@ -95,10 +96,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onOpenChange }) => {
                     ? "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
                     : "text-gray-600 hover:bg-gray-100"
                 }`}
-                onClick={() => handleNavigation(item.path)}
               >
-                <item.icon className="mr-3 h-5 w-5" />
-                {item.title}
+                <Link href={item.path}>
+                  <item.icon className="mr-3 h-5 w-5" />
+                  {item.title}
+                </Link>
               </Button>
             ))}
           </nav>

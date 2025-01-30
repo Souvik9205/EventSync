@@ -37,13 +37,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onOpenChange }) => {
     },
   ];
 
-  const handleNavigation = (path: string) => {
-    router.push(path);
-    if (window.innerWidth < 1024) {
-      // Close sidebar on navigation for mobile
-      onOpenChange(false);
-    }
-  };
+  // const handleNavigation = (path: string) => {
+  //   router.push(path);
+  //   if (window.innerWidth < 1024) {
+  //     // Close sidebar on navigation for mobile
+  //     onOpenChange(false);
+  //   }
+  // };
 
   return (
     <div className="flex h-screen">

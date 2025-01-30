@@ -34,7 +34,14 @@
 
 ## 📸 Screenshots
 
-(Include relevant screenshots showcasing the UI and key features)
+![Image Alt Text](images/landing.png)
+![Image Alt Text](images/home.png)
+![Image Alt Text](images/eventOverview.png)
+![Image Alt Text](images/eventOverview2.png)
+![Image Alt Text](images/attendanceList.png)
+![Image Alt Text](images/eventScan.jpeg)
+![Image Alt Text](images/eventAdmin.png)
+![Image Alt Text](images/registration.png)
 
 ---
 
@@ -43,6 +50,7 @@
 - 📽️ Upload and present PowerPoint slides within the platform.
 - 📩 Custom mass email functionality for event attendees.
 - 💳 Integrated payment gateway for paid events.
+- 📝 Better registration form builder
 
 ---
 
@@ -71,7 +79,7 @@
    npm run dev
    ```
 
-### Docker Setup
+### Docker Setup (not available yet)
 
 1. Run the application using Docker:
    ```sh
@@ -84,4 +92,14 @@
 
 For any queries, feature requests, or contributions, feel free to open an issue or submit a pull request. Stay tuned for upcoming updates!
 
+---
+
+## 🔗 Connect on Socials:
+
+- Portfolio- https://itzsouvik.com/
+- GitHub- https://github.com/Souvik9205
+- Instagram- https://www.instagram.com/souvik_23_/
+- LinkedIn- https://www.linkedin.com/in/souvik9205/
+
+<br />
 Happy coding! 🎉

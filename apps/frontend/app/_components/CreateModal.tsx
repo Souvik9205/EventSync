@@ -46,6 +46,7 @@ export const EventCreationModal: React.FC<EventCreationModalProps> = ({
   });
 
   const [error, setError] = useState<string | null>(null);
+  const [submiting, setSubmitting] = useState(false);
 
   const [customFields, setCustomFields] = useState<CustomField[]>([]);
 
@@ -77,6 +78,7 @@ export const EventCreationModal: React.FC<EventCreationModalProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setSubmitting(true);
 
     if (
       !formData.name ||
@@ -128,6 +130,7 @@ export const EventCreationModal: React.FC<EventCreationModalProps> = ({
         additionalData: "",
       });
       setCustomFields([]);
+      setSubmitting(false);
       onClose();
     } catch (err) {
       setError(
@@ -431,9 +434,10 @@ export const EventCreationModal: React.FC<EventCreationModalProps> = ({
             </Button>
             <Button
               type="submit"
+              disabled={submiting}
               className="bg-emerald-600 hover:bg-emerald-700 text-white"
             >
-              Create Event
+              {submiting ? "Creating..." : "Create Event"}
             </Button>
           </div>
         </form>

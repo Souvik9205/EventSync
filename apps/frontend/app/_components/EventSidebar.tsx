@@ -87,20 +87,19 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onOpenChange }) => {
           {/* Navigation Items */}
           <nav className="flex-1 px-4 space-y-2 pt-4">
             {menuItems.map((item) => (
-              <Button
-                key={item.title}
-                variant="ghost"
-                className={`w-full justify-start text-lg font-medium py-6 ${
-                  pathname === item.path
-                    ? "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
-                    : "text-gray-600 hover:bg-gray-100"
-                }`}
-              >
-                <Link href={item.path}>
+              <Link key={item.title} href={item.path}>
+                <Button
+                  variant="ghost"
+                  className={`w-full flex-1 px-4 space-y-2 pt-4 justify-start text-lg font-medium py-6 ${
+                    pathname === item.path
+                      ? "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
+                      : "text-gray-600 hover:bg-gray-100"
+                  }`}
+                >
                   <item.icon className="mr-3 h-5 w-5" />
                   {item.title}
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             ))}
           </nav>
         </div>

@@ -59,7 +59,25 @@ function EventDetailPage() {
       }
     }
   };
-
+  const renderTextWithLinks = (text: string) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.split(urlRegex).map((part, index) => {
+      if (part.match(urlRegex)) {
+        return (
+          <a
+            key={index}
+            href={part}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:underline"
+          >
+            {part}
+          </a>
+        );
+      }
+      return part;
+    });
+  };
   const handleReviewSubmit = async (rating: number) => {
     if (!token || !eventId) {
       toast.error("You must be logged in to submit a review");
@@ -197,9 +215,12 @@ function EventDetailPage() {
                   <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4 md:mb-6">
                     About the Event
                   </h2>
-                  <p className="text-gray-600 text-base md:text-lg leading-relaxed whitespace-pre-wrap">
+                  {/* <p className="text-gray-600 text-base md:text-lg leading-relaxed whitespace-pre-wrap">
                     {event.description}
-                  </p>
+                  </p> */}
+                  <div className="text-gray-600 text-base md:text-lg leading-relaxed whitespace-pre-wrap">
+                    {renderTextWithLinks(event.description)}
+                  </div>
                 </CardContent>
               </Card>
             </motion.div>
@@ -279,9 +300,12 @@ function EventDetailPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="px-4 pb-4 md:px-6 md:pb-6">
-                  <p className="text-gray-600 text-base md:text-lg leading-relaxed">
+                  {/* <p className="text-gray-600 text-base md:text-lg leading-relaxed">
                     {event.additionalData}
-                  </p>
+                  </p> */}
+                  <div className="text-gray-600 text-base md:text-lg leading-relaxed">
+                    {renderTextWithLinks(event.additionalData)}
+                  </div>
                 </CardContent>
               </Card>
             </motion.div>

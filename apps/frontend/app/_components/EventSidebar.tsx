@@ -1,11 +1,10 @@
 import React from "react";
-import { useParams, useRouter, usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { Menu, X, LayoutDashboard, Users, QrCode, UserCog } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onOpenChange }) => {
-  const router = useRouter();
   const pathname = usePathname();
   const { slug } = useParams();
 

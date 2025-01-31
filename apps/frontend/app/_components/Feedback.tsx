@@ -6,11 +6,6 @@ import { ArrowRight, Loader2, Mail } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import emailjs from "@emailjs/browser";
-import {
-  EMAILJS_PUBLIC_KEY,
-  EMAILJS_SERVICE_ID,
-  EMAILJS_TEMPLATE_ID,
-} from "../secret";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 

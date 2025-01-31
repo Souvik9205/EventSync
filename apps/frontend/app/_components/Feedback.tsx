@@ -18,22 +18,27 @@ const Feedback = () => {
   const handleFeedbackSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setIsLoading(true);
+    const ServiceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+    const TemplateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+    const PublicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+    console.log(
+      "serviceId, templateId, publicKey",
+      ServiceId,
+      TemplateId,
+      PublicKey
+    );
 
     try {
       const templateParams = {
         user_name: name,
         user_email: email,
         user_message: message,
-        to_email: process.env.MY_EMAIL,
+        to_email: process.env.NEXT_PUBLIC_MY_EMAIL,
         subject: "EventSync connect",
       };
 
-      await emailjs.send(
-        process.env.EMAILJS_SERVICE_ID!,
-        process.env.EMAILJS_TEMPLATE_ID!,
-        templateParams,
-        process.env.EMAILJS_PUBLIC_KEY
-      );
+      await emailjs.send(ServiceId!, TemplateId!, templateParams, PublicKey!);
 
       toast.success("Thank you for your feedback!", {
         description: "We will get back to you soon.",

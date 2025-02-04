@@ -115,7 +115,7 @@ const EventLandingPage = () => {
                   <div className="flex items-center justify-center rounded-2xl overflow-hidden bg-gradient-to-br from-emerald-100 to-teal-100 shadow-emerald-500/70 shadow-2xl">
                     <img
                       // src="/api/placeholder/800/600"
-                      src="./attendanceList.png"
+                      src="./attendanceList2.png"
                       alt="Platform Demo"
                       className="w-full h-full object-cover shadow-md shadow-emerald-600"
                     />

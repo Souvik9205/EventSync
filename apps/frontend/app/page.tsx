@@ -112,12 +112,14 @@ const EventLandingPage = () => {
                   transition={{ duration: 0.6 }}
                   className="relative mx-3 md:mx-0"
                 >
-                  <div className="aspect-video rounded-2xl overflow-hidden bg-gradient-to-br from-emerald-100 to-teal-100 shadow-2xl">
+                  <div className="flex items-center justify-center rounded-2xl overflow-hidden bg-gradient-to-br from-emerald-100 to-teal-100 shadow-emerald-500/70 shadow-2xl">
                     <img
-                      src="/api/placeholder/800/600"
+                      // src="/api/placeholder/800/600"
+                      src="./attendanceList.png"
                       alt="Platform Demo"
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover shadow-md shadow-emerald-600"
                     />
+                    {/* <Reordering /> */}
                   </div>
                   <motion.div
                     className="absolute -bottom-8 md:-left-8 -left-5 bg-white p-2 md:p-4 rounded-lg shadow-xl"

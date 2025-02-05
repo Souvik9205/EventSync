@@ -22,7 +22,7 @@ const SignupSchema = Yup.object().shape({
   password: Yup.string()
     .min(6, "Password must be at least 6 characters")
     .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+=[\]{}|;:'",.<>?/`~\\-])[A-Za-z\d!@#$%^&*()_+=[\]{}|;:'",.<>?/`~\\-]{8,}$/,
       "Password must include uppercase, lowercase, number, and special character"
     )
     .required("Password is required"),

@@ -10,7 +10,7 @@
     "backend-deploy": "npm i && npm run get_backend && npm run prisma_setup",
     "frontend-deploy": "npm i && npm run get_frontend",
     "dev": "turbo dev",
-    "start_server": "cd apps/server && npm run dev",
+"start_server": "cd apps/server && npm run build && npm run start",
     "start_frontend": "cd apps/frontend && npm run dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
@@ -21,9 +21,9 @@
     "turbo": "^2.3.3",
     "typescript": "5.5.4"
   },
-  "engines": {
-    "node": ">=18"
-  },
+"engines": {
+  "node": "20.x"
+},
   "packageManager": "npm@10.9.0",
   "workspaces": [
     "apps/*",

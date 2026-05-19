@@ -1,8 +1,8 @@
-import nodemailer from "nodemailer";
 import qr from "qrcode";
 import fs from "fs";
 import path from "path";
 import crypto from "crypto";
+import { Resend } from 'resend';
 
 type EmailData = {
   eventName?: string;
@@ -13,30 +13,8 @@ type EmailData = {
 
 type EmailType = "UserOtp" | "EventOtp" | "RegisterOtp";
 
-const createTransporter = () =>
-  nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    auth: {
-      user: process.env.NODEMAILER_USER,
-      pass: process.env.NODEMAILER_PASS,
-    },
-    connectionTimeout: 10000,
-    greetingTimeout: 10000,
-    socketTimeout: 10000,
-  });
-const transporter = createTransporter();
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-if (process.env.NODE_ENV !== "production") {
-  transporter.verify((error, success) => {
-    if (error) {
-      console.error("SMTP VERIFY ERROR =>", error);
-    } else {
-      console.log("SMTP SERVER READY");
-    }
-  });
-}
 
 const baseStyles = `
     body {
@@ -345,13 +323,19 @@ export const EmailSent = async (
       default:
         throw new Error("Invalid email type");
     }
-    await transporter.sendMail({
-      from: "EventSync <no-reply@example.com>",
-      to: toEmail,
-      subject: subject,
-      html: emailHTML,
-      attachments: attachment,
-    });
+   await resend.emails.send({
+  from: "EventSync <onboarding@resend.dev>",
+  to: toEmail,
+  subject: subject,
+  html: emailHTML,
+  attachments:
+    attachment.length > 0
+      ? attachment.map((file) => ({
+          filename: file.filename,
+          path: file.path,
+        }))
+      : undefined,
+});
 
     return true;
   }catch (error: any) {

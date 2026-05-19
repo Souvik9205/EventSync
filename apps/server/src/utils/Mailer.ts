@@ -15,30 +15,28 @@ type EmailType = "UserOtp" | "EventOtp" | "RegisterOtp";
 
 const createTransporter = () =>
   nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  requireTLS: true,
-  auth: {
-    user: process.env.NODEMAILER_USER,
-    pass: process.env.NODEMAILER_PASS,
-  },
-  tls: {
-    rejectUnauthorized: false,
-  },
-  connectionTimeout: 20000,
-  greetingTimeout: 20000,
-  socketTimeout: 20000,
-});
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.NODEMAILER_USER,
+      pass: process.env.NODEMAILER_PASS,
+    },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 10000,
+  });
 const transporter = createTransporter();
 
-transporter.verify((error, success) => {
-  if (error) {
-    console.error("SMTP VERIFY ERROR =>", error);
-  } else {
-    console.log("SMTP SERVER READY");
-  }
-});
+if (process.env.NODE_ENV !== "production") {
+  transporter.verify((error, success) => {
+    if (error) {
+      console.error("SMTP VERIFY ERROR =>", error);
+    } else {
+      console.log("SMTP SERVER READY");
+    }
+  });
+}
 
 const baseStyles = `
     body {

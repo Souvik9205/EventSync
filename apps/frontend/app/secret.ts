@@ -1,5 +1,5 @@
-// export const BACKEND_URL = "https://eventsync-backend-ydhu.onrender.com/api";
-export const BACKEND_URL = "http://localhost:8080/api";
+export const BACKEND_URL = "https://eventsync-1.onrender.com/api";
+// export const BACKEND_URL = "http://localhost:8080/api";
 export const FRONTEND_URL = "https://event-syncs.vercel.app";
 // export const FRONTEND_URL = "http://localhost:3000";
 

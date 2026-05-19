@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,87 +8,82 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  name      String?
-  imgURL    String? 
-
-  // resetToken PasswordResetToken[]
-  eventsOwned Event[]  @relation("EventOwnership")
-  events    Event[]  @relation("UserEvents")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                 String               @id @default(cuid())
+  email              String               @unique
+  password           String
+  name               String?
+  imgURL             String?
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  events             Event[]              @relation("UserEvents")
+  PasswordResetToken PasswordResetToken[]
+  eventsOwned        Event[]              @relation("EventOwnership")
 }
 
 model Event {
-  id          String        @id @default(cuid())
-  name        String
-  description String
-  tickets     Int?
-  price       Int   @default(0)
-  organization String
-  orgImgURL    String       
-  dateTime    DateTime
-  location    String
-  admins      User[]    @relation("EventOwnership")
-  createdBy   User      @relation("UserEvents", fields: [createdById], references: [id])
-  createdById String
+  id             String        @id @default(cuid())
+  name           String
+  description    String
+  tickets        Int?
+  price          Int           @default(0)
+  organization   String
+  orgImgURL      String
+  dateTime       DateTime
+  location       String
+  createdById    String
   additionalData String?
-  customFields CustomField[]
-  attendees   Attendance[]
-  review      Review[]
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  attendees      Attendance[]
+  customFields   CustomField[]
+  createdBy      User          @relation("UserEvents", fields: [createdById], references: [id])
+  review         Review?
+  admins         User[]        @relation("EventOwnership")
 }
 
 model CustomField {
-  id        String    @id @default(cuid())
+  id        String @id @default(cuid())
   eventId   String
   fieldName String
-  fieldType String    @default("text")
+  fieldType String
   Event     Event  @relation(fields: [eventId], references: [id])
 }
 
 model Attendance {
-  id        String      @id @default(cuid())
+  id        String   @id @default(cuid())
   user      String
   eventId   String
   timestamp DateTime @default(now())
-  fields    Json 
-  verified  Boolean 
-
+  fields    Json
+  verified  Boolean
   Event     Event    @relation(fields: [eventId], references: [id])
 }
 
 model Review {
-  id   String  @id @default(cuid())
-  eventId String @unique
+  id           String  @id @default(cuid())
+  eventId      String  @unique
   participants Int
-  Review Decimal
-
-  Event Event @relation(fields: [eventId], references: [id])
+  Review       Decimal
+  Event        Event   @relation(fields: [eventId], references: [id])
 }
 
 model Otp {
-  id String @id @default(cuid())
-  user String
-  otp String
-  data Json
-  type OTP_Type
-
+  id        String   @id @default(cuid())
+  user      String
+  otp       String
+  data      Json
+  type      OTP_Type
   expiresAt DateTime
 }
 
-// model PasswordResetToken {
-// id        String   @id @default(cuid())
-// userId    String
-// user      User     @relation(fields: [userId], references: [id])
-// token     String   @unique
-
-// expiresAt DateTime
-// createdAt DateTime @default(now())
-// }
+model PasswordResetToken {
+  id        String   @id
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  User      User     @relation(fields: [userId], references: [id])
+}
 
 enum OTP_Type {
   UserOtp

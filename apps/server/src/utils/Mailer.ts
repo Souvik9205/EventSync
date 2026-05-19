@@ -323,10 +323,10 @@ export const EmailSent = async (
       default:
         throw new Error("Invalid email type");
     }
-   await resend.emails.send({
-  from: "EventSync <onboarding@resend.dev>",
+const response = await resend.emails.send({
+  from: "EventSync <noreply@itzsouvik.dev>",
   to: toEmail,
-  subject: subject,
+  subject,
   html: emailHTML,
   attachments:
     attachment.length > 0
@@ -336,6 +336,8 @@ export const EmailSent = async (
         }))
       : undefined,
 });
+
+console.log("RESEND RESPONSE =>", response);
 
     return true;
   }catch (error: any) {

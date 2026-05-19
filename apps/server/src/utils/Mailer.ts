@@ -20,6 +20,18 @@ const transporter = nodemailer.createTransport({
     pass: process.env.NODEMAILER_PASS,
   },
 });
+console.log("NODEMAILER_USER =>", process.env.NODEMAILER_USER);
+console.log(
+  "NODEMAILER_PASS EXISTS =>",
+  !!process.env.NODEMAILER_PASS
+);
+transporter.verify((error, success) => {
+  if (error) {
+    console.error("SMTP VERIFY ERROR =>", error);
+  } else {
+    console.log("SMTP SERVER READY");
+  }
+});
 
 const baseStyles = `
     body {
@@ -338,10 +350,12 @@ export const EmailSent = async (
     });
 
     return true;
-  } catch (error) {
-    console.error("Email sending error:", error);
-    return false;
-  } finally {
+  }catch (error: any) {
+  console.error("FULL EMAIL ERROR =>", error);
+  console.error("ERROR MESSAGE =>", error?.message);
+  console.error("ERROR STACK =>", error?.stack);
+  return false;
+} finally {
     if (type === "RegisterOtp") {
       cleanupTempFiles([
         path.join(__dirname, "temp_qrcode", path.basename(qrCodeFilePath!)),

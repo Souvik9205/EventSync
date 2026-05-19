@@ -328,13 +328,13 @@ const response = await resend.emails.send({
   to: toEmail,
   subject,
   html: emailHTML,
-  attachments:
-    attachment.length > 0
-      ? attachment.map((file) => ({
-          filename: file.filename,
-          path: file.path,
-        }))
-      : undefined,
+attachments:
+  attachment.length > 0
+    ? attachment.map((file) => ({
+        filename: file.filename,
+        content: fs.readFileSync(file.path).toString("base64"),
+      }))
+    : undefined,
 });
 
 console.log("RESEND RESPONSE =>", response);

@@ -13,18 +13,25 @@ type EmailData = {
 
 type EmailType = "UserOtp" | "EventOtp" | "RegisterOtp";
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
+const createTransporter = () =>
+  nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  requireTLS: true,
   auth: {
     user: process.env.NODEMAILER_USER,
     pass: process.env.NODEMAILER_PASS,
   },
+  tls: {
+    rejectUnauthorized: false,
+  },
+  connectionTimeout: 20000,
+  greetingTimeout: 20000,
+  socketTimeout: 20000,
 });
-console.log("NODEMAILER_USER =>", process.env.NODEMAILER_USER);
-console.log(
-  "NODEMAILER_PASS EXISTS =>",
-  !!process.env.NODEMAILER_PASS
-);
+const transporter = createTransporter();
+
 transporter.verify((error, success) => {
   if (error) {
     console.error("SMTP VERIFY ERROR =>", error);
@@ -35,8 +42,7 @@ transporter.verify((error, success) => {
 
 const baseStyles = `
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      margin: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0;
       padding: 0;
       color: #1f2937;
       background-color: #f3f4f6;
